@@ -1,0 +1,65 @@
+package com.company.mentoring.entity;
+
+import io.jmix.core.entity.annotation.JmixGeneratedValue;
+import io.jmix.core.metamodel.annotation.Composition;
+import io.jmix.core.metamodel.annotation.JmixEntity;
+import jakarta.persistence.*;
+
+import java.util.List;
+import java.util.UUID;
+
+@JmixEntity
+@Table(name = "TEAM", indexes = {
+        @Index(name = "IDX_TEAM_APPLICATION", columnList = "APPLICATION_ID")
+})
+@Entity
+public class Team {
+    @JmixGeneratedValue
+    @Column(name = "ID", nullable = false)
+    @Id
+    private UUID id;
+
+    @JoinColumn(name = "APPLICATION_ID")
+    @ManyToOne(fetch = FetchType.LAZY)
+    private Application application;
+
+    @Column(name = "TEAM_TYPE")
+    private String teamType;
+
+    @Composition
+    @OneToMany(mappedBy = "team")
+    private List<TeamMember> members;
+
+    public List<TeamMember> getMembers() {
+        return members;
+    }
+
+    public void setMembers(List<TeamMember> members) {
+        this.members = members;
+    }
+
+    public TeamType getTeamType() {
+        return teamType == null ? null : TeamType.fromId(teamType);
+    }
+
+    public void setTeamType(TeamType teamType) {
+        this.teamType = teamType == null ? null : teamType.getId();
+    }
+
+    public Application getApplication() {
+        return application;
+    }
+
+    public void setApplication(Application application) {
+        this.application = application;
+    }
+
+    public UUID getId() {
+        return id;
+    }
+
+    public void setId(UUID id) {
+        this.id = id;
+    }
+
+}

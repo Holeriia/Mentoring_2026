@@ -3,6 +3,9 @@
 
     <menu id="application" title="msg://com.company.mentoring/menu.application.title" opened="true">
         <item view="User.list" title="msg://com.company.mentoring.view.user/UserListView.title"/>
+        <item view="Workspace.list" title="msg://com.company.mentoring.view.workspace/workspaceListView.title"/>
+        <item view="WorkspaceParticipant.list"
+              title="msg://com.company.mentoring.view.workspaceparticipant/workspaceParticipantListView.title"/>
     </menu>
 
 </menu-config>

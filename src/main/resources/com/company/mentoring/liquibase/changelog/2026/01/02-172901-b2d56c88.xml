@@ -1,0 +1,238 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<databaseChangeLog
+        xmlns="http://www.liquibase.org/xml/ns/dbchangelog"
+        xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+        xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog
+                      http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-latest.xsd"
+        objectQuotingStrategy="QUOTE_ONLY_RESERVED_WORDS">
+    <changeSet id="1" author="Mentoring">
+        <createTable tableName="APPLICATION">
+            <column name="ID" type="UUID">
+                <constraints nullable="false" primaryKey="true" primaryKeyName="PK_APPLICATION"/>
+            </column>
+            <column name="WORKSPACE_ID" type="UUID"/>
+            <column name="INITIATOR_ID" type="UUID"/>
+            <column name="CURRENT_RECIPIENT_ID" type="UUID"/>
+            <column name="TITLE" type="VARCHAR(255)"/>
+            <column name="DESCRIPTION" type="CLOB"/>
+            <column name="STATUS" type="VARCHAR(255)"/>
+            <column name="CURRENT_PRIORITY_INDEX" type="INT"/>
+            <column name="PROCESS_INSTANCE_ID" type="VARCHAR(255)"/>
+        </createTable>
+    </changeSet>
+    <changeSet id="2" author="Mentoring">
+        <createTable tableName="APPLICATION_CLARIFICATION">
+            <column name="ID" type="UUID">
+                <constraints nullable="false" primaryKey="true" primaryKeyName="PK_APPLICATION_CLARIFICATION"/>
+            </column>
+            <column name="APPLICATION_ID" type="UUID"/>
+            <column name="AUTHOR_ID" type="UUID"/>
+            <column name="MESSAGE" type="VARCHAR(255)"/>
+            <column name="CREATED_AT" type="DATETIME"/>
+        </createTable>
+    </changeSet>
+    <changeSet id="3" author="Mentoring">
+        <createTable tableName="APPLICATION_PRIORITY">
+            <column name="ID" type="UUID">
+                <constraints nullable="false" primaryKey="true" primaryKeyName="PK_APPLICATION_PRIORITY"/>
+            </column>
+            <column name="APPLICATION_ID" type="UUID"/>
+            <column name="SUPERVISOR_ID" type="UUID"/>
+            <column name="PRIORITY_NUMBER" type="INT"/>
+        </createTable>
+    </changeSet>
+    <changeSet id="4" author="Mentoring">
+        <createTable tableName="ASSIGNMENT">
+            <column name="ID" type="UUID">
+                <constraints nullable="false" primaryKey="true" primaryKeyName="PK_ASSIGNMENT"/>
+            </column>
+            <column name="TITLE" type="VARCHAR(255)"/>
+            <column name="DESCRIPTION" type="CLOB"/>
+            <column name="CREATED_AT" type="DATETIME"/>
+            <column name="EXECUTORS_TEAM_ID" type="UUID"/>
+            <column name="SUPERVISORS_TEAM_ID" type="UUID"/>
+            <column name="WORKSPACE_ID" type="UUID"/>
+            <column name="STATUS" type="VARCHAR(255)"/>
+        </createTable>
+    </changeSet>
+    <changeSet id="5" author="Mentoring">
+        <createTable tableName="TEAM">
+            <column name="ID" type="UUID">
+                <constraints nullable="false" primaryKey="true" primaryKeyName="PK_TEAM"/>
+            </column>
+            <column name="APPLICATION_ID" type="UUID"/>
+            <column name="TEAM_TYPE" type="VARCHAR(255)"/>
+        </createTable>
+    </changeSet>
+    <changeSet id="6" author="Mentoring">
+        <createTable tableName="TEAM_MEMBER">
+            <column name="ID" type="UUID">
+                <constraints nullable="false" primaryKey="true" primaryKeyName="PK_TEAM_MEMBER"/>
+            </column>
+            <column name="TEAM_ID" type="UUID"/>
+            <column name="PARTICIPANT_ID" type="UUID"/>
+        </createTable>
+    </changeSet>
+    <changeSet id="7" author="Mentoring">
+        <createTable tableName="WORKSPACE">
+            <column name="ID" type="UUID">
+                <constraints nullable="false" primaryKey="true" primaryKeyName="PK_WORKSPACE"/>
+            </column>
+            <column name="NAME" type="VARCHAR(255)"/>
+            <column name="DESCRIPTION" type="CLOB"/>
+            <column name="STATUS" type="VARCHAR(255)"/>
+            <column name="OWNER_ID" type="UUID"/>
+        </createTable>
+    </changeSet>
+    <changeSet id="8" author="Mentoring">
+        <createTable tableName="WORKSPACE_PARTICIPANT">
+            <column name="ID" type="UUID">
+                <constraints nullable="false" primaryKey="true" primaryKeyName="PK_WORKSPACE_PARTICIPANT"/>
+            </column>
+            <column name="WORKSPACE_ID" type="UUID"/>
+            <column name="USER_ID" type="UUID"/>
+            <column name="CONTEXT_ROLE" type="VARCHAR(255)"/>
+            <column name="MAX_ASSIGNMENTS" type="INT"/>
+        </createTable>
+    </changeSet>
+    <changeSet id="9" author="Mentoring">
+        <createIndex indexName="IDX_APPLICATION_CLARIFICATION_APPLICATION" tableName="APPLICATION_CLARIFICATION">
+            <column name="APPLICATION_ID"/>
+        </createIndex>
+
+        <addForeignKeyConstraint baseColumnNames="APPLICATION_ID" baseTableName="APPLICATION_CLARIFICATION"
+                                 constraintName="FK_APPLICATION_CLARIFICATION_ON_APPLICATION" referencedColumnNames="ID"
+                                 referencedTableName="APPLICATION"/>
+    </changeSet>
+    <changeSet id="10" author="Mentoring">
+        <createIndex indexName="IDX_APPLICATION_CLARIFICATION_AUTHOR" tableName="APPLICATION_CLARIFICATION">
+            <column name="AUTHOR_ID"/>
+        </createIndex>
+
+        <addForeignKeyConstraint baseColumnNames="AUTHOR_ID" baseTableName="APPLICATION_CLARIFICATION"
+                                 constraintName="FK_APPLICATION_CLARIFICATION_ON_AUTHOR" referencedColumnNames="ID"
+                                 referencedTableName="WORKSPACE_PARTICIPANT"/>
+    </changeSet>
+    <changeSet id="11" author="Mentoring">
+        <createIndex indexName="IDX_APPLICATION_CURRENT_RECIPIENT" tableName="APPLICATION">
+            <column name="CURRENT_RECIPIENT_ID"/>
+        </createIndex>
+
+        <addForeignKeyConstraint baseColumnNames="CURRENT_RECIPIENT_ID" baseTableName="APPLICATION"
+                                 constraintName="FK_APPLICATION_ON_CURRENT_RECIPIENT" referencedColumnNames="ID"
+                                 referencedTableName="WORKSPACE_PARTICIPANT"/>
+    </changeSet>
+    <changeSet id="12" author="Mentoring">
+        <createIndex indexName="IDX_APPLICATION_PRIORITY_APPLICATION" tableName="APPLICATION_PRIORITY">
+            <column name="APPLICATION_ID"/>
+        </createIndex>
+
+        <addForeignKeyConstraint baseColumnNames="APPLICATION_ID" baseTableName="APPLICATION_PRIORITY"
+                                 constraintName="FK_APPLICATION_PRIORITY_ON_APPLICATION" referencedColumnNames="ID"
+                                 referencedTableName="APPLICATION"/>
+    </changeSet>
+    <changeSet id="13" author="Mentoring">
+        <createIndex indexName="IDX_APPLICATION_PRIORITY_SUPERVISOR" tableName="APPLICATION_PRIORITY">
+            <column name="SUPERVISOR_ID"/>
+        </createIndex>
+
+        <addForeignKeyConstraint baseColumnNames="SUPERVISOR_ID" baseTableName="APPLICATION_PRIORITY"
+                                 constraintName="FK_APPLICATION_PRIORITY_ON_SUPERVISOR" referencedColumnNames="ID"
+                                 referencedTableName="WORKSPACE_PARTICIPANT"/>
+    </changeSet>
+    <changeSet id="14" author="Mentoring">
+        <createIndex indexName="IDX_APPLICATION_WORKSPACE" tableName="APPLICATION">
+            <column name="WORKSPACE_ID"/>
+        </createIndex>
+
+        <addForeignKeyConstraint baseColumnNames="WORKSPACE_ID" baseTableName="APPLICATION"
+                                 constraintName="FK_APPLICATION_ON_WORKSPACE" referencedColumnNames="ID"
+                                 referencedTableName="WORKSPACE"/>
+    </changeSet>
+    <changeSet id="15" author="Mentoring">
+        <createIndex indexName="IDX_ASSIGNMENT_EXECUTORS_TEAM" tableName="ASSIGNMENT">
+            <column name="EXECUTORS_TEAM_ID"/>
+        </createIndex>
+
+        <addForeignKeyConstraint baseColumnNames="EXECUTORS_TEAM_ID" baseTableName="ASSIGNMENT"
+                                 constraintName="FK_ASSIGNMENT_ON_EXECUTORS_TEAM" referencedColumnNames="ID"
+                                 referencedTableName="TEAM"/>
+    </changeSet>
+    <changeSet id="16" author="Mentoring">
+        <createIndex indexName="IDX_ASSIGNMENT_SUPERVISORS_TEAM" tableName="ASSIGNMENT">
+            <column name="SUPERVISORS_TEAM_ID"/>
+        </createIndex>
+
+        <addForeignKeyConstraint baseColumnNames="SUPERVISORS_TEAM_ID" baseTableName="ASSIGNMENT"
+                                 constraintName="FK_ASSIGNMENT_ON_SUPERVISORS_TEAM" referencedColumnNames="ID"
+                                 referencedTableName="TEAM"/>
+    </changeSet>
+    <changeSet id="17" author="Mentoring">
+        <createIndex indexName="IDX_ASSIGNMENT_WORKSPACE" tableName="ASSIGNMENT">
+            <column name="WORKSPACE_ID"/>
+        </createIndex>
+
+        <addForeignKeyConstraint baseColumnNames="WORKSPACE_ID" baseTableName="ASSIGNMENT"
+                                 constraintName="FK_ASSIGNMENT_ON_WORKSPACE" referencedColumnNames="ID"
+                                 referencedTableName="WORKSPACE"/>
+    </changeSet>
+    <changeSet id="18" author="Mentoring">
+        <createIndex indexName="IDX_TEAM_APPLICATION" tableName="TEAM">
+            <column name="APPLICATION_ID"/>
+        </createIndex>
+
+        <addForeignKeyConstraint baseColumnNames="APPLICATION_ID" baseTableName="TEAM"
+                                 constraintName="FK_TEAM_ON_APPLICATION" referencedColumnNames="ID"
+                                 referencedTableName="APPLICATION"/>
+    </changeSet>
+    <changeSet id="19" author="Mentoring">
+        <createIndex indexName="IDX_TEAM_MEMBER_PARTICIPANT" tableName="TEAM_MEMBER">
+            <column name="PARTICIPANT_ID"/>
+        </createIndex>
+
+        <addForeignKeyConstraint baseColumnNames="PARTICIPANT_ID" baseTableName="TEAM_MEMBER"
+                                 constraintName="FK_TEAM_MEMBER_ON_PARTICIPANT" referencedColumnNames="ID"
+                                 referencedTableName="WORKSPACE_PARTICIPANT"/>
+    </changeSet>
+    <changeSet id="20" author="Mentoring">
+        <createIndex indexName="IDX_TEAM_MEMBER_TEAM" tableName="TEAM_MEMBER">
+            <column name="TEAM_ID"/>
+        </createIndex>
+
+        <addForeignKeyConstraint baseColumnNames="TEAM_ID" baseTableName="TEAM_MEMBER"
+                                 constraintName="FK_TEAM_MEMBER_ON_TEAM" referencedColumnNames="ID"
+                                 referencedTableName="TEAM"/>
+    </changeSet>
+    <changeSet id="21" author="Mentoring">
+        <createIndex indexName="IDX_WORKSPACE_OWNER" tableName="WORKSPACE">
+            <column name="OWNER_ID"/>
+        </createIndex>
+
+        <addForeignKeyConstraint baseColumnNames="OWNER_ID" baseTableName="WORKSPACE"
+                                 constraintName="FK_WORKSPACE_ON_OWNER" referencedColumnNames="ID"
+                                 referencedTableName="USER_"/>
+    </changeSet>
+    <changeSet id="22" author="Mentoring">
+        <createIndex indexName="IDX_WORKSPACE_PARTICIPANT_USER" tableName="WORKSPACE_PARTICIPANT">
+            <column name="USER_ID"/>
+        </createIndex>
+
+        <addForeignKeyConstraint baseColumnNames="USER_ID" baseTableName="WORKSPACE_PARTICIPANT"
+                                 constraintName="FK_WORKSPACE_PARTICIPANT_ON_USER" referencedColumnNames="ID"
+                                 referencedTableName="USER_"/>
+    </changeSet>
+    <changeSet id="23" author="Mentoring">
+        <createIndex indexName="IDX_WORKSPACE_PARTICIPANT_WORKSPACE" tableName="WORKSPACE_PARTICIPANT">
+            <column name="WORKSPACE_ID"/>
+        </createIndex>
+
+        <addForeignKeyConstraint baseColumnNames="WORKSPACE_ID" baseTableName="WORKSPACE_PARTICIPANT"
+                                 constraintName="FK_WORKSPACE_PARTICIPANT_ON_WORKSPACE" referencedColumnNames="ID"
+                                 referencedTableName="WORKSPACE"/>
+    </changeSet>
+    <changeSet id="24" author="Mentoring">
+        <addForeignKeyConstraint baseColumnNames="INITIATOR_ID" baseTableName="APPLICATION"
+                                 constraintName="FK_APPLICATION_ON_INITIATOR" referencedColumnNames="ID"
+                                 referencedTableName="WORKSPACE_PARTICIPANT"/>
+    </changeSet>
+</databaseChangeLog>

@@ -1,0 +1,77 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<view xmlns="http://jmix.io/schema/flowui/view"
+      title="msg://workspaceDashboardView.title">
+
+    <data readOnly="true">
+        <collection id="applicationsDc" class="com.company.mentoring.entity.Application" fetchPlan="_base">
+            <loader id="applicationsDl">
+                <query>
+                    <![CDATA[select e from Application e where (:workspaceId is null or e.workspace.id = :workspaceId)]]>
+                </query>
+            </loader>
+        </collection>
+
+        <collection id="participantsDc" class="com.company.mentoring.entity.WorkspaceParticipant">
+            <fetchPlan extends="_base">
+                <property name="user" fetchPlan="_base"/>
+            </fetchPlan>
+            <loader id="participantsDl">
+                <query>
+                    <![CDATA[select e from WorkspaceParticipant e
+                 left join fetch e.user
+                 where e.workspace.id = :workspaceId]]>
+                </query>
+            </loader>
+        </collection>
+    </data>
+
+    <layout spacing="true" padding="true">
+
+        <vbox id="applicationsBox" padding="false" spacing="true" width="100%">
+            <h3 text="Мои заявки"/>
+
+            <hbox id="buttonsPanel" classNames="buttons-panel">
+                <button id="createButton" action="applicationsDataGrid.create"/>
+                <button id="editButton" action="applicationsDataGrid.edit"/>
+                <button id="removeButton" action="applicationsDataGrid.remove"/>
+            </hbox>
+
+            <dataGrid id="applicationsDataGrid" width="100%" dataContainer="applicationsDc">
+                <actions>
+                    <action id="create" type="list_create">
+                        <properties>
+                            <property name="openMode" value="DIALOG"/>
+                        </properties>
+                    </action>
+                    <action id="edit" type="list_edit">
+                        <properties>
+                            <property name="openMode" value="DIALOG"/>
+                        </properties>
+                    </action>
+                    <action id="remove" type="list_remove"/>
+                </actions>
+                <columns>
+                    <column property="title"/>
+                    <column property="status"/>
+                </columns>
+            </dataGrid>
+        </vbox>
+
+        <vbox id="participantsBox" padding="false" spacing="true" width="100%">
+            <h3 text="Участники пространства"/>
+            <dataGrid id="participantsDataGrid"
+                      width="100%"
+                      minHeight="15em"
+                      dataContainer="participantsDc">
+                <columns>
+                    <column property="user.username" header="Логин"/>
+                    <column property="user.firstName" header="Имя"/>
+                    <column property="user.lastName" header="Фамилия"/>
+                    <column property="contextRole" header="Роль в пространстве"/>
+                    <column property="maxAssignments" header="Лимит мест"/>
+                </columns>
+            </dataGrid>
+        </vbox>
+
+    </layout>
+</view>

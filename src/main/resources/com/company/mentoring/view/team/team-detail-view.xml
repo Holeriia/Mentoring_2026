@@ -1,0 +1,63 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<view xmlns="http://jmix.io/schema/flowui/view"
+      title="msg://teamDetailView.title"
+      focusComponent="form">
+    <data>
+        <instance id="teamDc"
+                  class="com.company.mentoring.entity.Team">
+            <fetchPlan extends="_base">
+                <property name="members" fetchPlan="_base">
+                    <property name="participant" fetchPlan="_instance_name">
+                        <property name="user" fetchPlan="_instance_name"/>
+                    </property>
+                </property>
+            </fetchPlan>
+            <loader id="teamDl"/>
+            <collection id="membersDc" property="members"/>
+        </instance>
+    </data>
+    <facets>
+        <dataLoadCoordinator auto="true"/>
+    </facets>
+    <actions>
+        <action id="saveAction" type="detail_saveClose"/>
+        <action id="closeAction" type="detail_close"/>
+    </actions>
+    <layout>
+        <formLayout id="form" dataContainer="teamDc">
+            <responsiveSteps>
+                <responsiveStep minWidth="0" columns="1"/>
+                <responsiveStep minWidth="40em" columns="2"/>
+            </responsiveSteps>
+            <select id="teamTypeField" property="teamType"/>
+        </formLayout>
+        <h4 text="msg://com.company.mentoring.entity/Team.members"/>
+        <hbox id="membersButtonsPanel" classNames="buttons-panel">
+            <button action="membersDataGrid.createAction"/>
+            <button action="membersDataGrid.editAction"/>
+            <button action="membersDataGrid.removeAction"/>
+        </hbox>
+        <dataGrid id="membersDataGrid" dataContainer="membersDc" width="100%" minHeight="20em">
+            <actions>
+                <action id="createAction" type="list_create">
+                    <properties>
+                        <property name="openMode" value="DIALOG"/>
+                    </properties>
+                </action>
+                <action id="editAction" type="list_edit">
+                    <properties>
+                        <property name="openMode" value="DIALOG"/>
+                    </properties>
+                </action>
+                <action id="removeAction" type="list_remove"/>
+            </actions>
+            <columns>
+                <column property="participant"/>
+            </columns>
+        </dataGrid>
+        <hbox id="detailActions">
+            <button id="saveAndCloseButton" action="saveAction"/>
+            <button id="closeButton" action="closeAction"/>
+        </hbox>
+    </layout>
+</view>

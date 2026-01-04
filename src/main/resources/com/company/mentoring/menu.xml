@@ -8,6 +8,7 @@
               title="msg://com.company.mentoring.view.workspaceparticipant/workspaceParticipantListView.title"/>
         <item view="WorkspaceDashboardView"
               title="msg://com.company.mentoring.view.workspacedashboard/workspaceDashboardView.title"/>
+        <item view="Team.list" title="msg://com.company.mentoring.view.team/teamListView.title"/>
     </menu>
 
 </menu-config>

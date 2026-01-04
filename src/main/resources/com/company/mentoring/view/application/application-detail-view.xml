@@ -146,6 +146,7 @@
         <hbox id="detailActions">
             <button id="saveAndCloseButton" action="saveAction"/>
             <button id="closeButton" action="closeAction"/>
+            <button id="startProcessBtn" icon="ALIGN_RIGHT" text="send application"/>
         </hbox>
     </layout>
 </view>

@@ -56,7 +56,6 @@
                 </columns>
             </dataGrid>
         </vbox>
-
         <vbox id="participantsBox" padding="false" spacing="true" width="100%">
             <h3 text="Участники пространства"/>
             <dataGrid id="participantsDataGrid"

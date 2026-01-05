@@ -39,8 +39,9 @@ public class ApplicationDetailView extends StandardDetailView<Application> {
          WorkspaceParticipant recipient = firstPriority.getParticipant();
          application.setCurrentRecipient(recipient);
          application.setCurrentPriorityIndex(firstPriority.getPriorityNumber());
+         application.setStatus(ApplicationStatus.IN_REVIEW);
 
-         // ⬅️ ВАЖНО: передаём USER, а не username
+         // ВАЖНО: передаём USER, а не username
          User assigneeUser = recipient.getUser();
 
          Map<String, Object> variables = new HashMap<>();
@@ -54,8 +55,6 @@ public class ApplicationDetailView extends StandardDetailView<Application> {
          );
 
          application.setProcessInstanceId(pi.getId());
-
          System.out.println("Процесс запущен, исполнитель: " + assigneeUser.getUsername());
      }
-
 }

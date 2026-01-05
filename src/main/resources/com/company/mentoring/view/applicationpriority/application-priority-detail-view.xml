@@ -6,7 +6,7 @@
         <instance id="applicationPriorityDc"
                   class="com.company.mentoring.entity.ApplicationPriority">
             <fetchPlan extends="_base">
-                <property name="supervisor">
+                <property name="participant">
                     <property name="user" fetchPlan="_instance_name"/>
                 </property>
             </fetchPlan>
@@ -26,7 +26,7 @@
                 <responsiveStep minWidth="0" columns="1"/>
                 <responsiveStep minWidth="40em" columns="2"/>
             </responsiveSteps>
-            <entityPicker id="supervisorField" property="supervisor">
+            <entityPicker id="participantField" property="participant">
                 <actions>
                     <action id="entityLookupAction" type="entity_lookup"/>
                     <action id="entityClearAction" type="entity_clear"/>

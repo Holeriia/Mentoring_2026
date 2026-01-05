@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<databaseChangeLog
+        xmlns="http://www.liquibase.org/xml/ns/dbchangelog"
+        xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+        xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog
+                      http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-latest.xsd"
+        objectQuotingStrategy="QUOTE_ONLY_RESERVED_WORDS">
+    <changeSet id="1" author="Mentoring">
+        <dropForeignKeyConstraint baseTableName="application_priority"
+                                  constraintName="fk_application_priority_on_supervisor"/>
+    </changeSet>
+    <changeSet id="2" author="Mentoring">
+        <addColumn tableName="APPLICATION_PRIORITY">
+            <column name="PARTICIPANT_ID" type="UUID"/>
+        </addColumn>
+    </changeSet>
+    <changeSet id="3" author="Mentoring">
+        <addForeignKeyConstraint baseColumnNames="PARTICIPANT_ID" baseTableName="APPLICATION_PRIORITY"
+                                 constraintName="FK_APPLICATION_PRIORITY_ON_PARTICIPANT" referencedColumnNames="ID"
+                                 referencedTableName="WORKSPACE_PARTICIPANT"/>
+    </changeSet>
+</databaseChangeLog>

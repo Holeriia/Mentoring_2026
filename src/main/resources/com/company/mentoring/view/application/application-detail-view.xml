@@ -11,7 +11,7 @@
                     <property name="user" fetchPlan="_instance_name"/>
                 </property>
                 <property name="priorities" fetchPlan="_base">
-                    <property name="supervisor" fetchPlan="_instance_name">
+                    <property name="participant" fetchPlan="_instance_name">
                         <property name="user" fetchPlan="_instance_name"/>
                     </property>
                 </property>
@@ -85,7 +85,7 @@
             </actions>
             <columns>
                 <column property="priorityNumber"/>
-                <column property="supervisor"/>
+                <column property="participant"/>
             </columns>
         </dataGrid>
         <h4 text="msg://com.company.mentoring.entity/Application.teams"/>

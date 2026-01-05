@@ -22,9 +22,9 @@ public class ApplicationPriority {
     @ManyToOne(fetch = FetchType.LAZY)
     private Application application;
 
-    @JoinColumn(name = "SUPERVISOR_ID")
+    @JoinColumn(name = "PARTICIPANT_ID")
     @ManyToOne(fetch = FetchType.LAZY)
-    private WorkspaceParticipant supervisor;
+    private WorkspaceParticipant participant;
 
     @Column(name = "PRIORITY_NUMBER")
     private Integer priorityNumber;
@@ -37,12 +37,12 @@ public class ApplicationPriority {
         this.priorityNumber = priorityNumber;
     }
 
-    public WorkspaceParticipant getSupervisor() {
-        return supervisor;
+    public WorkspaceParticipant getParticipant() {
+        return participant;
     }
 
-    public void setSupervisor(WorkspaceParticipant supervisor) {
-        this.supervisor = supervisor;
+    public void setParticipant(WorkspaceParticipant participant) {
+        this.participant = participant;
     }
 
     public Application getApplication() {

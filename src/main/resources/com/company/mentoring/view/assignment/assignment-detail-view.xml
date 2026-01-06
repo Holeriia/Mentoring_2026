@@ -1,0 +1,69 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<view xmlns="http://jmix.io/schema/flowui/view"
+      title="msg://assignmentDetailView.title"
+      focusComponent="form">
+    <data>
+        <instance id="assignmentDc"
+                  class="com.company.mentoring.entity.Assignment">
+            <fetchPlan extends="_base">
+                <property name="executorsTeam" fetchPlan="_base">
+                    <property name="members" fetchPlan="_base">
+                        <property name="participant">
+                            <property name="user" fetchPlan="_instance_name"/>
+                        </property>
+                    </property>
+                </property>
+                <property name="supervisorsTeam" fetchPlan="_base">
+                    <property name="members" fetchPlan="_base">
+                        <property name="participant" fetchPlan="_instance_name">
+                            <property name="user" fetchPlan="_instance_name"/>
+                        </property>
+                    </property>
+                </property>
+                <property name="workspace" fetchPlan="_instance_name"/>
+            </fetchPlan>
+            <loader id="assignmentDl"/>
+        </instance>
+    </data>
+    <facets>
+        <dataLoadCoordinator auto="true"/>
+    </facets>
+    <actions>
+        <action id="saveAction" type="detail_saveClose"/>
+        <action id="closeAction" type="detail_close"/>
+    </actions>
+    <layout>
+        <formLayout id="form" dataContainer="assignmentDc">
+            <responsiveSteps>
+                <responsiveStep minWidth="0" columns="1"/>
+                <responsiveStep minWidth="40em" columns="2"/>
+            </responsiveSteps>
+            <textField id="titleField" property="title"/>
+            <textArea id="descriptionField" height="9.5em" property="description"/>
+            <dateTimePicker id="createdAtField" property="createdAt"/>
+            <entityPicker id="executorsTeamField" property="executorsTeam">
+                <actions>
+                    <action id="entityLookupAction" type="entity_lookup"/>
+                    <action id="entityClearAction" type="entity_clear"/>
+                </actions>
+            </entityPicker>
+            <entityPicker id="supervisorsTeamField" property="supervisorsTeam">
+                <actions>
+                    <action id="entityLookupAction" type="entity_lookup"/>
+                    <action id="entityClearAction" type="entity_clear"/>
+                </actions>
+            </entityPicker>
+            <entityPicker id="workspaceField" property="workspace">
+                <actions>
+                    <action id="entityLookupAction" type="entity_lookup"/>
+                    <action id="entityClearAction" type="entity_clear"/>
+                </actions>
+            </entityPicker>
+            <select id="statusField" property="status"/>
+        </formLayout>
+        <hbox id="detailActions">
+            <button id="saveAndCloseButton" action="saveAction"/>
+            <button id="closeButton" action="closeAction"/>
+        </hbox>
+    </layout>
+</view>

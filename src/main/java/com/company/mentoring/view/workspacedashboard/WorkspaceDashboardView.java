@@ -24,9 +24,6 @@ public class WorkspaceDashboardView extends StandardView {
     @ViewComponent
     private CollectionLoader<WorkspaceParticipant> participantsDl;
 
-    @ViewComponent
-    private CollectionContainer<WorkspaceParticipant> participantsDc;
-
     @Subscribe
     public void onQueryParametersChange(QueryParametersChangeEvent event) {
         List<String> workspaceIds = event.getQueryParameters().getParameters().get("workspaceId");

@@ -15,7 +15,7 @@ import java.util.HashMap;
 import java.util.Map;
 
 
- @Route(value = "applications/:id", layout = MainView.class)
+@Route(value = "applications/:id", layout = MainView.class)
 @ViewController(id = "Application.detail")
 @ViewDescriptor(path = "application-detail-view.xml")
 @EditedEntityContainer("applicationDc")

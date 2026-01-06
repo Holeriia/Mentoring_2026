@@ -6,6 +6,8 @@ import io.jmix.security.model.EntityPolicyAction;
 import io.jmix.security.role.annotation.EntityAttributePolicy;
 import io.jmix.security.role.annotation.EntityPolicy;
 import io.jmix.security.role.annotation.ResourceRole;
+import io.jmix.securityflowui.role.annotation.MenuPolicy;
+import io.jmix.securityflowui.role.annotation.ViewPolicy;
 
 @ResourceRole(name = "MemberRole", code = MemberRole.CODE)
 public interface MemberRole {
@@ -43,4 +45,8 @@ public interface MemberRole {
 
     @EntityPolicy(entityClass = User.class, actions = EntityPolicyAction.READ)
     void user();
+
+    @MenuPolicy(menuIds = {"WorkspaceDashboardView", "Workspace.list", "User.list"})
+    @ViewPolicy(viewIds = {"WorkspaceDashboardView", "Workspace.list", "User.list", "Workspace.detail", "Application.approval", "Application.detail", "Assignment.detail", "Assignment.list"})
+    void screens();
 }

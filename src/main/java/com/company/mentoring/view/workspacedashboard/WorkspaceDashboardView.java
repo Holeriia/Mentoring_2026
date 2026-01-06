@@ -1,14 +1,22 @@
 package com.company.mentoring.view.workspacedashboard;
 
 
+import com.company.mentoring.app.ApplicationAutoFillService;
 import com.company.mentoring.entity.Application;
+import com.company.mentoring.entity.Workspace;
 import com.company.mentoring.entity.WorkspaceParticipant;
+import com.company.mentoring.view.application.ApplicationDetailView;
 import com.company.mentoring.view.main.MainView;
+import com.vaadin.flow.component.ClickEvent;
 import com.vaadin.flow.router.Route;
+import io.jmix.core.DataManager;
+import io.jmix.flowui.DialogWindows;
 import io.jmix.flowui.action.list.CreateAction;
+import io.jmix.flowui.kit.component.button.JmixButton;
 import io.jmix.flowui.model.CollectionContainer;
 import io.jmix.flowui.model.CollectionLoader;
 import io.jmix.flowui.view.*;
+import org.springframework.beans.factory.annotation.Autowired;
 
 import java.util.List;
 import java.util.UUID;
@@ -24,12 +32,22 @@ public class WorkspaceDashboardView extends StandardView {
     @ViewComponent
     private CollectionLoader<WorkspaceParticipant> participantsDl;
 
+    @ViewComponent("applicationsDataGrid.create")
+    private CreateAction<Application> applicationCreateAction;
+
+    @Autowired
+    private DialogWindows dialogWindows;
+
+    private UUID workspaceId;          // текущий воркспейс из URL
+
     @Subscribe
     public void onQueryParametersChange(QueryParametersChangeEvent event) {
-        List<String> workspaceIds = event.getQueryParameters().getParameters().get("workspaceId");
+        List<String> workspaceIds = event.getQueryParameters()
+                .getParameters()
+                .get("workspaceId");
 
         if (workspaceIds != null && !workspaceIds.isEmpty()) {
-            UUID workspaceId = UUID.fromString(workspaceIds.get(0));
+            workspaceId = UUID.fromString(workspaceIds.get(0));
 
             participantsDl.setParameter("workspaceId", workspaceId);
             applicationsDl.setParameter("workspaceId", workspaceId);
@@ -39,18 +57,39 @@ public class WorkspaceDashboardView extends StandardView {
         }
     }
 
-    // опционально: если кто‑то будет открывать этот экран программно не через URL
-    public void setWorkspaceId(UUID workspaceId) {
-        applicationsDl.setParameter("workspaceId", workspaceId);
-        applicationsDl.load();
+
+    @Autowired
+    private DataManager dataManager;
+
+    @Autowired
+    private ApplicationAutoFillService autoFillService;
+
+    private void openApplicationCreateDialog() {
+        // 1) создаём новый инстанс Application
+        Application application = dataManager.create(Application.class);
+
+        // 2) автозаполнение через сервис
+        autoFillService.autoFillApplication(application);
+        System.out.println("айди " + workspaceId);
+
+        // 3) ставим workspace сразу здесь
+        if (workspaceId != null) {
+            Workspace workspace = dataManager.load(Workspace.class)
+                    .id(workspaceId)
+                    .one();
+            application.setWorkspace(workspace);
+        }
+
+        // 4) открываем detail‑вью с УЖЕ заполняющейся сущностью
+        dialogWindows.detail(this, Application.class)
+                .withViewClass(ApplicationDetailView.class)
+                .editEntity(application)   // <-- вместо newEntity()
+                .open();
     }
 
-    @ViewComponent("applicationsDataGrid.create")
-    private CreateAction<Application> applicationCreateAction;
-
-    @Subscribe
-    public void onInit(InitEvent event) {
-        applicationCreateAction.setOpenMode(OpenMode.DIALOG);
+    @Subscribe(id = "createButton", subject = "clickListener")
+    public void onCreateButtonClick(final ClickEvent<JmixButton> event) {
+        System.out.println("click!");
+        openApplicationCreateDialog();
     }
-
 }

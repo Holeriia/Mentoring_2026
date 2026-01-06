@@ -31,7 +31,7 @@
             <h3 text="Мои заявки"/>
 
             <hbox id="buttonsPanel" classNames="buttons-panel">
-                <button id="createButton" action="applicationsDataGrid.create"/>
+                <button id="createButton" text="Create" icon="PLUS"/>
                 <button id="editButton" action="applicationsDataGrid.edit"/>
                 <button id="removeButton" action="applicationsDataGrid.remove"/>
             </hbox>

@@ -1,6 +1,8 @@
 package com.company.mentoring.entity;
 
+import io.jmix.core.DeletePolicy;
 import io.jmix.core.entity.annotation.JmixGeneratedValue;
+import io.jmix.core.entity.annotation.OnDelete;
 import io.jmix.core.metamodel.annotation.Composition;
 import io.jmix.core.metamodel.annotation.InstanceName;
 import io.jmix.core.metamodel.annotation.JmixEntity;
@@ -51,14 +53,17 @@ public class Application {
     private String processInstanceId;
 
     @Composition
+    @OnDelete(DeletePolicy.CASCADE)
     @OneToMany(mappedBy = "application")
     private List<ApplicationPriority> priorities;
 
     @Composition
+    @OnDelete(DeletePolicy.CASCADE)
     @OneToMany(mappedBy = "application")
     private List<ApplicationClarification> clarifications;
 
     @Composition
+    @OnDelete(DeletePolicy.CASCADE)
     @OneToMany(mappedBy = "application")
     private List<Team> teams;
 

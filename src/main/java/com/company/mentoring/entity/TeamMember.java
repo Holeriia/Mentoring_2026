@@ -1,6 +1,8 @@
 package com.company.mentoring.entity;
 
+import io.jmix.core.DeletePolicy;
 import io.jmix.core.entity.annotation.JmixGeneratedValue;
+import io.jmix.core.entity.annotation.OnDeleteInverse;
 import io.jmix.core.metamodel.annotation.JmixEntity;
 import jakarta.persistence.*;
 
@@ -18,6 +20,7 @@ public class TeamMember {
     @Id
     private UUID id;
 
+    @OnDeleteInverse(DeletePolicy.CASCADE)
     @JoinColumn(name = "TEAM_ID")
     @ManyToOne(fetch = FetchType.LAZY)
     private Team team;

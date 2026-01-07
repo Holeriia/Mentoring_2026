@@ -1,6 +1,8 @@
 package com.company.mentoring.entity;
 
 import io.jmix.core.entity.annotation.JmixGeneratedValue;
+import io.jmix.core.metamodel.annotation.DependsOnProperties;
+import io.jmix.core.metamodel.annotation.InstanceName;
 import io.jmix.core.metamodel.annotation.JmixEntity;
 import jakarta.persistence.*;
 
@@ -31,6 +33,25 @@ public class WorkspaceParticipant {
 
     @Column(name = "MAX_ASSIGNMENTS")
     private Integer maxAssignments;
+
+    @InstanceName
+    @DependsOnProperties({"user"})
+    public String getInstanceName() {
+        if (user == null) {
+            return "";
+        }
+
+        String username = user.getUsername();
+        String firstName = user.getFirstName();
+        String lastName = user.getLastName();
+
+        return String.format(
+                "%s %s %s",
+                username,
+                firstName != null ? firstName : "",
+                lastName != null ? lastName : ""
+        ).trim();
+    }
 
     public Integer getMaxAssignments() {
         return maxAssignments;

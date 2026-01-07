@@ -1,6 +1,7 @@
  package com.company.mentoring.view.application;
 
 import com.company.mentoring.app.ApplicationAutoFillService;
+import com.company.mentoring.app.ApplicationProcessService;
 import com.company.mentoring.entity.*;
 import com.company.mentoring.view.main.MainView;
 import com.vaadin.flow.component.ClickEvent;
@@ -22,42 +23,13 @@ import java.util.UUID;
 @ViewController(id = "Application.detail")
 @ViewDescriptor(path = "application-detail-view.xml")
 @EditedEntityContainer("applicationDc")
-public class ApplicationDetailView extends StandardDetailView<Application> {
+ public class ApplicationDetailView extends StandardDetailView<Application> {
 
-    @Autowired
-    private RuntimeService runtimeService;
-
+     @Autowired
+     private ApplicationProcessService applicationProcessService;
 
      @Subscribe("startProcessBtn")
      public void onStartProcessBtnClick(final ClickEvent<JmixButton> event) {
-
-         Application application = getEditedEntity();
-
-         ApplicationPriority firstPriority = application.getPriorities()
-                 .stream()
-                 .sorted(Comparator.comparing(ApplicationPriority::getPriorityNumber))
-                 .findFirst()
-                 .orElseThrow(() -> new IllegalStateException("Нет приоритетов у заявки"));
-
-         WorkspaceParticipant recipient = firstPriority.getParticipant();
-         application.setCurrentRecipient(recipient);
-         application.setCurrentPriorityIndex(firstPriority.getPriorityNumber());
-         application.setStatus(ApplicationStatus.IN_REVIEW);
-
-         // ВАЖНО: передаём USER, а не username
-         User assigneeUser = recipient.getUser();
-
-         Map<String, Object> variables = new HashMap<>();
-         variables.put("assigneeUsername", assigneeUser); // <-- User
-         variables.put("applicationId", application.getId());
-
-         ProcessInstance pi = runtimeService.startProcessInstanceByKey(
-                 "application-approval",
-                 application.getId().toString(),
-                 variables
-         );
-
-         application.setProcessInstanceId(pi.getId());
-         System.out.println("Процесс запущен, исполнитель: " + assigneeUser.getUsername());
+         applicationProcessService.startProcess(getEditedEntity());
      }
-}
+ }

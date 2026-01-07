@@ -2,6 +2,7 @@ package com.company.mentoring.view.workspacedashboard;
 
 
 import com.company.mentoring.app.ApplicationAutoFillService;
+import com.company.mentoring.app.WorkspaceParticipantService;
 import com.company.mentoring.entity.Application;
 import com.company.mentoring.entity.Workspace;
 import com.company.mentoring.entity.WorkspaceParticipant;
@@ -64,26 +65,36 @@ public class WorkspaceDashboardView extends StandardView {
     @Autowired
     private ApplicationAutoFillService autoFillService;
 
+    @Autowired
+    private WorkspaceParticipantService workspaceParticipantService;
+
     private void openApplicationCreateDialog() {
-        // 1) создаём новый инстанс Application
+
+        // 1) создаём новую Application
         Application application = dataManager.create(Application.class);
 
-        // 2) автозаполнение через сервис
-        autoFillService.autoFillApplication(application);
-        System.out.println("айди " + workspaceId);
-
-        // 3) ставим workspace сразу здесь
-        if (workspaceId != null) {
-            Workspace workspace = dataManager.load(Workspace.class)
-                    .id(workspaceId)
-                    .one();
-            application.setWorkspace(workspace);
+        // 2) ставим workspace СРАЗУ
+        if (workspaceId == null) {
+            throw new IllegalStateException("workspaceId is null");
         }
 
-        // 4) открываем detail‑вью с УЖЕ заполняющейся сущностью
+        Workspace workspace = dataManager.load(Workspace.class)
+                .id(workspaceId)
+                .one();
+
+        application.setWorkspace(workspace);
+
+        // 3) получаем инициатора
+        WorkspaceParticipant initiator =
+                workspaceParticipantService.getCurrentParticipant(workspace);
+
+        // 4) автозаполнение
+        autoFillService.autoFillApplication(application, initiator);
+
+        // 5) открываем detail-view
         dialogWindows.detail(this, Application.class)
                 .withViewClass(ApplicationDetailView.class)
-                .editEntity(application)   // <-- вместо newEntity()
+                .editEntity(application)
                 .open();
     }
 

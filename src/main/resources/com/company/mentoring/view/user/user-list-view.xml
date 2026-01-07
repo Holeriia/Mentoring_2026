@@ -34,6 +34,7 @@
             <button id="editButton" action="usersDataGrid.editAction"/>
             <button id="removeButton" action="usersDataGrid.removeAction"/>
             <button id="showRoleAssignmentsButton" action="usersDataGrid.showRoleAssignmentsAction"/>
+            <button id="importFromCISButton" text="Import Users from CIS"/>
             <dropdownButton id="additionalButton" text="msg://additionalMenu" icon="COG">
                 <items>
                     <actionItem id="changePasswordItem" ref="usersDataGrid.changePasswordAction"/>

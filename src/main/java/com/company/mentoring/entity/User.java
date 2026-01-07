@@ -8,9 +8,10 @@ import io.jmix.core.metamodel.annotation.DependsOnProperties;
 import io.jmix.core.metamodel.annotation.InstanceName;
 import io.jmix.core.metamodel.annotation.JmixEntity;
 import io.jmix.security.authentication.JmixUserDetails;
-import org.springframework.security.core.GrantedAuthority;
 import jakarta.persistence.*;
 import jakarta.validation.constraints.Email;
+import org.springframework.security.core.GrantedAuthority;
+
 import java.util.Collection;
 import java.util.Collections;
 import java.util.UUID;
@@ -23,7 +24,7 @@ import java.util.UUID;
 public class User implements JmixUserDetails, HasTimeZone {
 
     @Id
-    @Column(name = "ID")
+    @Column(name = "ID", nullable = false)
     @JmixGeneratedValue
     private UUID id;
 
@@ -45,6 +46,9 @@ public class User implements JmixUserDetails, HasTimeZone {
     @Column(name = "LAST_NAME")
     private String lastName;
 
+    @Column(name = "PATRONYMIC")
+    private String patronymic;
+
     @Email
     @Column(name = "EMAIL")
     private String email;
@@ -55,8 +59,28 @@ public class User implements JmixUserDetails, HasTimeZone {
     @Column(name = "TIME_ZONE_ID")
     private String timeZoneId;
 
+    //будет использоваться для сопоставления с пользователем КИС
+    @Column(name = "EXTERNAL_ID")
+    private String externalId;
+
     @Transient
     private Collection<? extends GrantedAuthority> authorities;
+
+    public String getExternalId() {
+        return externalId;
+    }
+
+    public void setExternalId(String externalId) {
+        this.externalId = externalId;
+    }
+
+    public String getPatronymic() {
+        return patronymic;
+    }
+
+    public void setPatronymic(String patronymic) {
+        this.patronymic = patronymic;
+    }
 
     public UUID getId() {
         return id;
@@ -154,11 +178,23 @@ public class User implements JmixUserDetails, HasTimeZone {
     }
 
     @InstanceName
-    @DependsOnProperties({"firstName", "lastName", "username"})
+    @DependsOnProperties({"firstName", "lastName", "patronymic"})
     public String getDisplayName() {
-        return String.format("%s %s [%s]", (firstName != null ? firstName : ""),
-                (lastName != null ? lastName : ""), username).trim();
+        StringBuilder sb = new StringBuilder();
+        if (firstName != null && !firstName.isEmpty()) {
+            sb.append(firstName);
+        }
+        if (lastName != null && !lastName.isEmpty()) {
+            if (!sb.isEmpty()) sb.append(" ");
+            sb.append(lastName);
+        }
+        if (patronymic != null && !patronymic.isEmpty()) {
+            if (!sb.isEmpty()) sb.append(" ");
+            sb.append(patronymic);
+        }
+        return sb.toString();
     }
+
 
     @Override
     public String getTimeZoneId() {

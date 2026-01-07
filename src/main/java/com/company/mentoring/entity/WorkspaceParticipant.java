@@ -1,6 +1,8 @@
 package com.company.mentoring.entity;
 
+import io.jmix.core.DeletePolicy;
 import io.jmix.core.entity.annotation.JmixGeneratedValue;
+import io.jmix.core.entity.annotation.OnDeleteInverse;
 import io.jmix.core.metamodel.annotation.DependsOnProperties;
 import io.jmix.core.metamodel.annotation.InstanceName;
 import io.jmix.core.metamodel.annotation.JmixEntity;
@@ -24,6 +26,7 @@ public class WorkspaceParticipant {
     @ManyToOne(fetch = FetchType.LAZY)
     private Workspace workspace;
 
+    @OnDeleteInverse(DeletePolicy.CASCADE)
     @JoinColumn(name = "USER_ID")
     @ManyToOne(fetch = FetchType.LAZY)
     private User user;
@@ -41,15 +44,15 @@ public class WorkspaceParticipant {
             return "";
         }
 
-        String username = user.getUsername();
         String firstName = user.getFirstName();
         String lastName = user.getLastName();
+        String patronymic = user.getPatronymic();
 
         return String.format(
                 "%s %s %s",
-                username,
-                firstName != null ? firstName : "",
-                lastName != null ? lastName : ""
+                firstName,
+                lastName != null ? firstName : "",
+                patronymic != null ? lastName : ""
         ).trim();
     }
 

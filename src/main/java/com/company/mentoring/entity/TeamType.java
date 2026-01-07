@@ -29,4 +29,12 @@ public enum TeamType implements EnumClass<String> {
         }
         return null;
     }
+
+    public static TeamType fromContextRole(ContextRole role) {
+        switch (role) {
+            case EXECUTOR: return EXECUTORS;
+            case SUPERVISOR: return SUPERVISORS;
+            default: throw new IllegalArgumentException("Unknown role: " + role);
+        }
+    }
 }

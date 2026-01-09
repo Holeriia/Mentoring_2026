@@ -7,6 +7,7 @@ import io.jmix.bpmflowui.processform.annotation.Outcome;
 import io.jmix.bpmflowui.processform.annotation.ProcessForm;
 import io.jmix.bpmflowui.processform.annotation.ProcessVariable;
 import io.jmix.core.DataManager;
+import io.jmix.core.security.CurrentAuthentication;
 import io.jmix.flowui.kit.component.button.JmixButton;
 import io.jmix.flowui.model.InstanceContainer;
 import io.jmix.flowui.view.*;
@@ -38,6 +39,9 @@ public class ApplicationApprovalView extends StandardView {
         @ProcessVariable(name = "applicationId")
         private UUID applicationId;
 
+        @Autowired
+        private CurrentAuthentication currentAuthentication;
+
         @Subscribe
         public void onBeforeShow(BeforeShowEvent event) {
                 if (applicationId == null) {
@@ -61,8 +65,10 @@ public class ApplicationApprovalView extends StandardView {
 
         @Subscribe("approveBtn")
         protected void onApproveBtnClick(ClickEvent<JmixButton> event) {
+                String username = currentAuthentication.getUser().getUsername();
                 processFormContext.taskCompletion()
                         .withOutcome("approve")
+                        .addProcessVariable("approverUsername", username)
                         .complete();
                 closeWithDefaultAction();
         }

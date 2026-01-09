@@ -66,20 +66,20 @@ public class User implements JmixUserDetails, HasTimeZone {
     @Transient
     private Collection<? extends GrantedAuthority> authorities;
 
-    public String getExternalId() {
-        return externalId;
-    }
-
-    public void setExternalId(String externalId) {
-        this.externalId = externalId;
-    }
-
     public String getPatronymic() {
         return patronymic;
     }
 
     public void setPatronymic(String patronymic) {
         this.patronymic = patronymic;
+    }
+
+    public String getExternalId() {
+        return externalId;
+    }
+
+    public void setExternalId(String externalId) {
+        this.externalId = externalId;
     }
 
     public UUID getId() {
@@ -178,23 +178,11 @@ public class User implements JmixUserDetails, HasTimeZone {
     }
 
     @InstanceName
-    @DependsOnProperties({"firstName", "lastName", "patronymic"})
+    @DependsOnProperties({"firstName", "lastName", "username"})
     public String getDisplayName() {
-        StringBuilder sb = new StringBuilder();
-        if (firstName != null && !firstName.isEmpty()) {
-            sb.append(firstName);
-        }
-        if (lastName != null && !lastName.isEmpty()) {
-            if (!sb.isEmpty()) sb.append(" ");
-            sb.append(lastName);
-        }
-        if (patronymic != null && !patronymic.isEmpty()) {
-            if (!sb.isEmpty()) sb.append(" ");
-            sb.append(patronymic);
-        }
-        return sb.toString();
+        return String.format("%s %s [%s]", (firstName != null ? firstName : ""),
+                (lastName != null ? lastName : ""), username).trim();
     }
-
 
     @Override
     public String getTimeZoneId() {

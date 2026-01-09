@@ -1,9 +1,6 @@
 package com.company.mentoring.app;
 
-import com.company.mentoring.entity.Application;
-import com.company.mentoring.entity.Assignment;
-import com.company.mentoring.entity.AssignmentStatus;
-import com.company.mentoring.entity.TeamType;
+import com.company.mentoring.entity.*;
 import io.jmix.core.DataManager;
 import org.flowable.engine.delegate.DelegateExecution;
 import org.flowable.engine.delegate.JavaDelegate;
@@ -54,6 +51,7 @@ public class CreateAssignmentFromApplicationDelegate implements JavaDelegate {
         dataManager.save(assignment);
 
         // сохраняем ID для следующего userTask
-//        execution.setVariable("assignmentId", assignment.getId());
+        execution.setVariable("assignmentId", assignment.getId());
+
     }
 }

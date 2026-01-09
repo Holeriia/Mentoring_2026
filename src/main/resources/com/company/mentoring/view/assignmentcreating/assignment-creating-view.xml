@@ -1,0 +1,64 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<view xmlns="http://jmix.io/schema/flowui/view"
+      title="msg://assignmentCreatingView.title">
+
+    <data>
+        <instance id="assignmentDc"
+                  class="com.company.mentoring.entity.Assignment"/>
+    </data>
+
+    <layout spacing="true">
+
+        <h3 text="Assignment"/>
+
+        <formLayout>
+            <responsiveSteps>
+                <responsiveStep minWidth="0" columns="1"/>
+            </responsiveSteps>
+
+            <textField
+                    id="titleField"
+                    label="Название"
+                    dataContainer="assignmentDc"
+                    property="title"/>
+
+            <textArea
+                    id="descriptionField"
+                    label="Описание"
+                    dataContainer="assignmentDc"
+                    property="description"
+                    height="8em"/>
+
+            <entityPicker
+                    id="executorsTeamField"
+                    label="Команда исполнителей"
+                    dataContainer="assignmentDc"
+                    property="executorsTeam"/>
+
+            <entityPicker
+                    id="supervisorsTeamField"
+                    label="Команда руководителей"
+                    dataContainer="assignmentDc"
+                    property="supervisorsTeam"/>
+
+            <comboBox
+                    id="statusField"
+                    label="Статус"
+                    dataContainer="assignmentDc"
+                    property="status"
+                    readOnly="true"/>
+        </formLayout>
+
+        <hbox justifyContent="END" spacing="true">
+            <button
+                    id="approveBtn"
+                    text="Approve"
+                    themeNames="primary"/>
+
+            <button
+                    id="cancelBtn"
+                    text="Cancel"/>
+        </hbox>
+
+    </layout>
+</view>

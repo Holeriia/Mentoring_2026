@@ -100,7 +100,6 @@ public class WorkspaceDashboardView extends StandardView {
 
     @Subscribe(id = "createButton", subject = "clickListener")
     public void onCreateButtonClick(final ClickEvent<JmixButton> event) {
-        System.out.println("click!");
         openApplicationCreateDialog();
     }
 }

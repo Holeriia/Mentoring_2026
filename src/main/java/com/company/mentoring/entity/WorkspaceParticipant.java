@@ -40,21 +40,22 @@ public class WorkspaceParticipant {
     @InstanceName
     @DependsOnProperties({"user"})
     public String getInstanceName() {
-        if (user == null) {
-            return "";
-        }
+        if (user == null) return "";
 
         String firstName = user.getFirstName();
         String lastName = user.getLastName();
-        String patronymic = user.getPatronymic();
+        String username = user.getUsername();
 
-        return String.format(
-                "%s %s %s",
-                firstName,
-                lastName != null ? firstName : "",
-                patronymic != null ? lastName : ""
-        ).trim();
+        if (firstName == null && lastName == null && username == null) {
+            return user.getUsername(); // fallback
+        }
+
+        return String.format("%s %s %s",
+                firstName != null ? firstName : "",
+                lastName != null ? lastName : "",
+                username != null ? username : "").trim();
     }
+
 
     public Integer getMaxAssignments() {
         return maxAssignments;

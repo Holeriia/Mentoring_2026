@@ -62,10 +62,10 @@ public class ApplicationApprovalView extends StandardView {
 
         @Subscribe("approveBtn")
         protected void onApproveBtnClick(ClickEvent<JmixButton> event) {
-                String username = currentAuthentication.getUser().getUsername();
+                User user =  (User) currentAuthentication.getUser();
                 processFormContext.taskCompletion()
                         .withOutcome("approve")
-                        .addProcessVariable("approverUsername", username)
+                        .addProcessVariable("approverUsername", user)
                         .complete();
                 closeWithDefaultAction();
         }

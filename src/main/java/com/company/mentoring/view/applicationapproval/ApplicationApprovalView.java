@@ -20,7 +20,8 @@ import java.util.UUID;
 @ProcessForm(
         outcomes = {
                 @Outcome(id = "approve"),
-                @Outcome(id = "reject")
+                @Outcome(id = "reject"),
+                @Outcome(id = "comment")
         },
         allowedProcessKeys = {"application-approval"}
 )
@@ -77,6 +78,14 @@ public class ApplicationApprovalView extends StandardView {
         protected void onRejectBtnClick(ClickEvent<JmixButton> event) {
                 processFormContext.taskCompletion()
                         .withOutcome("reject")
+                        .complete();
+                closeWithDefaultAction();
+        }
+
+        @Subscribe(id = "commentBtn")
+        public void onCommentBtnClick(final ClickEvent<JmixButton> event) {
+                processFormContext.taskCompletion()
+                        .withOutcome("comment")
                         .complete();
                 closeWithDefaultAction();
         }

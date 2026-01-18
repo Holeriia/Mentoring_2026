@@ -36,9 +36,11 @@ public class ApplicationProcessService {
         application.setStatus(ApplicationStatus.IN_REVIEW);
 
         User assigneeUser = recipient.getUser();
+        User initiatorUser = application.getInitiator().getUser();
 
         Map<String, Object> variables = new HashMap<>();
-        variables.put("assigneeUsername", assigneeUser); // <-- User
+        variables.put("assigneeUsername", assigneeUser);
+        variables.put("previousAssignee", initiatorUser);
         variables.put("applicationId", application.getId());
 
         ProcessInstance pi = runtimeService.startProcessInstanceByKey(

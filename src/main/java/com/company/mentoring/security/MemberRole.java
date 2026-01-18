@@ -47,6 +47,6 @@ public interface MemberRole {
     void user();
 
     @MenuPolicy(menuIds = {"WorkspaceDashboardView", "Workspace.list", "User.list"})
-    @ViewPolicy(viewIds = {"WorkspaceDashboardView", "Workspace.list", "User.list", "Workspace.detail", "Application.approval", "Application.detail", "Assignment.detail", "Assignment.list"})
+    @ViewPolicy(viewIds = {"WorkspaceDashboardView", "Workspace.list", "User.list", "Workspace.detail", "Application.approval", "Application.detail", "Assignment.detail", "Assignment.list", "ApplicationClarification.detail"})
     void screens();
 }

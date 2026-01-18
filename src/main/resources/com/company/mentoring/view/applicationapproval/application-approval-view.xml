@@ -4,18 +4,21 @@
 
     <data>
         <instance id="applicationDc"
-                  class="com.company.mentoring.entity.Application"
-                  fetchPlan="_base"/>
-
-        <collection id="applicationClarificationDc"
-                    class="com.company.mentoring.entity.ApplicationClarification">
+                  class="com.company.mentoring.entity.Application">
             <fetchPlan>
-                <property name="author" fetchPlan="_instance_name"/>
-                <property name="message"/>
-                <property name="createdAt"/>
+                <property name="initiator">
+                    <property name="user" fetchPlan="_instance_name"/>
+                </property>
+                <property name="title"/>
+                <property name="description"/>
+                <property name="status"/>
+                <property name="clarifications" fetchPlan="_base">
+                    <property name="author" fetchPlan="_instance_name"/>
+                </property>
             </fetchPlan>
-            <loader id="applicationClarificationDl"/>
-        </collection>
+            <loader id="applicationDl"/>
+            <collection id="clarificationsDc" property="clarifications"/>
+        </instance>
     </data>
 
     <layout spacing="true">
@@ -26,6 +29,12 @@
             <responsiveSteps>
                 <responsiveStep minWidth="0" columns="1"/>
             </responsiveSteps>
+
+            <textField id="initiatorField"
+                       label="Инициатор"
+                       dataContainer="applicationDc"
+                       property="initiator.user"/>
+
             <textField id="titleField"
                        label="Название"
                        dataContainer="applicationDc"
@@ -37,40 +46,42 @@
                       property="description"
                       height="8em"/>
 
-            <h4 text="Комментарии"/>
-<!--            <hbox id="clarificationsButtonsPanel" classNames="buttons-panel">-->
-<!--                <button action="applicationClarificationDataGrid.createAction"/>-->
-<!--                <button action="applicationClarificationDataGrid.editAction"/>-->
-<!--                <button action="applicationClarificationDataGrid.removeAction"/>-->
-<!--            </hbox>-->
 
-            <dataGrid id="applicationClarificationDataGrid"
-                      dataContainer="applicationClarificationDc"
-                      width="100%" minHeight="20em">
-<!--                <actions>-->
-<!--                    <action id="createAction" type="list_create">-->
-<!--                        <properties>-->
-<!--                            <property name="openMode" value="DIALOG"/>-->
-<!--                        </properties>-->
-<!--                    </action>-->
-<!--                    <action id="editAction" type="list_edit">-->
-<!--                        <properties>-->
-<!--                            <property name="openMode" value="DIALOG"/>-->
-<!--                        </properties>-->
-<!--                    </action>-->
-<!--                    <action id="removeAction" type="list_remove"/>-->
-<!--                </actions>-->
+            <h4 text="msg://com.company.mentoring.entity/Application.clarifications"/>
+            <dataGrid id="clarificationsDataGrid" dataContainer="clarificationsDc" width="100%" minHeight="20em">
+                <actions>
+                    <action id="createAction" type="list_create">
+                        <properties>
+                            <property name="openMode" value="DIALOG"/>
+                        </properties>
+                    </action>
+                    <action id="editAction" type="list_edit">
+                        <properties>
+                            <property name="openMode" value="DIALOG"/>
+                        </properties>
+                    </action>
+                    <action id="removeAction" type="list_remove"/>
+                </actions>
                 <columns>
-                    <column property="author"/>
                     <column property="message"/>
                     <column property="createdAt"/>
+                    <column property="author"/>
                 </columns>
             </dataGrid>
 
-            <textArea
-                    id="commentField"
-                    label="Комментарий"
-                    height="6em"/>
+            <hbox width="100%" alignItems="CENTER" spacing="true">
+
+                <textArea
+                        id="commentField"
+                        label="Комментарий"
+                        width="100%"
+                        height="6em"/>
+
+                <button
+                        id="addCommentBtn"
+                        icon="vaadin:arrow-forward"
+                        themeNames="icon"/>
+            </hbox>
         </formLayout>
 
         <hbox justifyContent="END" spacing="true">
@@ -86,8 +97,8 @@
 
             <button
                     id="commentBtn"
-                    text="Comment"
-                    icon="vaadin:comment"/>
+                    text="return Application"
+                    icon="vaadin:arrow-backward"/>
         </hbox>
 
     </layout>

@@ -30,6 +30,7 @@ public class ApplicationClarification {
     @ManyToOne(fetch = FetchType.LAZY)
     private WorkspaceParticipant author;
 
+    @Lob
     @Column(name = "MESSAGE")
     private String message;
 

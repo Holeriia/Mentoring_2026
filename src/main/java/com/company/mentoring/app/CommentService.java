@@ -10,7 +10,6 @@ public class CommentService implements JavaDelegate {
 
     @Override
     public void execute(DelegateExecution execution) {
-        System.out.println("Сервис комментариев запущен");
 
         User current = (User) execution.getVariable("assigneeUsername");
         User previous = (User) execution.getVariable("previousAssignee");
@@ -18,6 +17,5 @@ public class CommentService implements JavaDelegate {
         execution.setVariable("assigneeUsername", previous);
         execution.setVariable("previousAssignee", current);
 
-        System.out.println("Возврат задачи пользователю: " + previous);
     }
 }

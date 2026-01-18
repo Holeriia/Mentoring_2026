@@ -6,6 +6,16 @@
         <instance id="applicationDc"
                   class="com.company.mentoring.entity.Application"
                   fetchPlan="_base"/>
+
+        <collection id="applicationClarificationDc"
+                    class="com.company.mentoring.entity.ApplicationClarification">
+            <fetchPlan>
+                <property name="author" fetchPlan="_instance_name"/>
+                <property name="message"/>
+                <property name="createdAt"/>
+            </fetchPlan>
+            <loader id="applicationClarificationDl"/>
+        </collection>
     </data>
 
     <layout spacing="true">
@@ -27,6 +37,36 @@
                       property="description"
                       height="8em"/>
 
+            <h4 text="Комментарии"/>
+<!--            <hbox id="clarificationsButtonsPanel" classNames="buttons-panel">-->
+<!--                <button action="applicationClarificationDataGrid.createAction"/>-->
+<!--                <button action="applicationClarificationDataGrid.editAction"/>-->
+<!--                <button action="applicationClarificationDataGrid.removeAction"/>-->
+<!--            </hbox>-->
+
+            <dataGrid id="applicationClarificationDataGrid"
+                      dataContainer="applicationClarificationDc"
+                      width="100%" minHeight="20em">
+<!--                <actions>-->
+<!--                    <action id="createAction" type="list_create">-->
+<!--                        <properties>-->
+<!--                            <property name="openMode" value="DIALOG"/>-->
+<!--                        </properties>-->
+<!--                    </action>-->
+<!--                    <action id="editAction" type="list_edit">-->
+<!--                        <properties>-->
+<!--                            <property name="openMode" value="DIALOG"/>-->
+<!--                        </properties>-->
+<!--                    </action>-->
+<!--                    <action id="removeAction" type="list_remove"/>-->
+<!--                </actions>-->
+                <columns>
+                    <column property="author"/>
+                    <column property="message"/>
+                    <column property="createdAt"/>
+                </columns>
+            </dataGrid>
+
             <textArea
                     id="commentField"
                     label="Комментарий"
@@ -43,6 +83,11 @@
                     id="rejectBtn"
                     text="Reject"
                     themeNames="error"/>
+
+            <button
+                    id="commentBtn"
+                    text="Comment"
+                    icon="vaadin:comment"/>
         </hbox>
 
     </layout>

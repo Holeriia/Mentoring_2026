@@ -6,7 +6,7 @@ import com.company.mentoring.app.WorkspaceParticipantService;
 import com.company.mentoring.entity.Application;
 import com.company.mentoring.entity.Workspace;
 import com.company.mentoring.entity.WorkspaceParticipant;
-import com.company.mentoring.view.application.ApplicationDetailView;
+import com.company.mentoring.view.application.ApplicationStartView;
 import com.company.mentoring.view.main.MainView;
 import com.vaadin.flow.component.ClickEvent;
 import com.vaadin.flow.router.Route;
@@ -14,7 +14,6 @@ import io.jmix.core.DataManager;
 import io.jmix.flowui.DialogWindows;
 import io.jmix.flowui.action.list.CreateAction;
 import io.jmix.flowui.kit.component.button.JmixButton;
-import io.jmix.flowui.model.CollectionContainer;
 import io.jmix.flowui.model.CollectionLoader;
 import io.jmix.flowui.view.*;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -93,7 +92,7 @@ public class WorkspaceDashboardView extends StandardView {
 
         // 5) открываем detail-view
         dialogWindows.detail(this, Application.class)
-                .withViewClass(ApplicationDetailView.class)
+                .withViewClass(ApplicationStartView.class)
                 .editEntity(application)
                 .open();
     }

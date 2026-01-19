@@ -1,0 +1,96 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<view xmlns="http://jmix.io/schema/flowui/view"
+      title="msg://applicationComment.title"
+      focusComponent="form">
+    <data>
+        <instance id="applicationDc"
+                  class="com.company.mentoring.entity.Application">
+            <fetchPlan extends="_instance_name">
+                <property name="initiator" fetchPlan="_instance_name">
+                    <property name="user">
+                        <property name="username"/>
+                        <property name="firstName"/>
+                        <property name="lastName"/>
+                    </property>
+                </property>
+                <property name="description"/>
+                <property name="status"/>
+                <property name="clarifications" fetchPlan="_base">
+                    <property name="author" fetchPlan="_instance_name"/>
+                </property>
+            </fetchPlan>
+            <loader id="applicationDl"/>
+            <collection id="clarificationsDc" property="clarifications"/>
+        </instance>
+    </data>
+    <facets>
+        <dataLoadCoordinator auto="true"/>
+    </facets>
+    <actions>
+        <action id="saveAction" type="detail_saveClose"/>
+        <action id="closeAction" type="detail_close"/>
+    </actions>
+    <layout>
+        <formLayout id="form" dataContainer="applicationDc">
+            <responsiveSteps>
+                <responsiveStep minWidth="0" columns="1"/>
+                <responsiveStep minWidth="40em" columns="2"/>
+            </responsiveSteps>
+            <entityPicker id="initiatorField" property="initiator">
+                <actions>
+                    <action id="entityLookupAction" type="entity_lookup"/>
+                    <action id="entityClearAction" type="entity_clear"/>
+                </actions>
+            </entityPicker>
+            <textField id="titleField" property="title"/>
+            <textArea id="descriptionField" height="9.5em" property="description"/>
+            <select id="statusField" property="status"/>
+        </formLayout>
+        <h4 text="msg://com.company.mentoring.entity/Application.clarifications"/>
+        <hbox id="clarificationsButtonsPanel" classNames="buttons-panel">
+            <button action="clarificationsDataGrid.createAction"/>
+            <button action="clarificationsDataGrid.editAction"/>
+            <button action="clarificationsDataGrid.removeAction"/>
+        </hbox>
+        <dataGrid id="clarificationsDataGrid" dataContainer="clarificationsDc" width="100%" minHeight="20em">
+            <actions>
+                <action id="createAction" type="list_create">
+                    <properties>
+                        <property name="openMode" value="DIALOG"/>
+                    </properties>
+                </action>
+                <action id="editAction" type="list_edit">
+                    <properties>
+                        <property name="openMode" value="DIALOG"/>
+                    </properties>
+                </action>
+                <action id="removeAction" type="list_remove"/>
+            </actions>
+            <columns>
+                <column property="message"/>
+                <column property="createdAt"/>
+                <column property="author"/>
+            </columns>
+        </dataGrid>
+
+        <hbox width="100%" alignItems="CENTER" spacing="true">
+
+            <textArea
+                    id="commentField"
+                    label="Комментарий"
+                    width="100%"
+                    height="6em"/>
+
+            <button
+                    id="addCommentBtn"
+                    icon="vaadin:arrow-forward"
+                    themeNames="icon"/>
+        </hbox>
+
+<!--        <hbox id="detailActions">-->
+<!--            <button id="saveAndCloseButton" action="saveAction"/>-->
+<!--            <button id="closeButton" action="closeAction"/>-->
+<!--        </hbox>-->
+        <button id="replyCommentBtn" text="Reply to a comment"/>
+    </layout>
+</view>

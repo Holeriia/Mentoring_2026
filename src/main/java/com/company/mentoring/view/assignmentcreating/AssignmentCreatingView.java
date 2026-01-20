@@ -2,6 +2,7 @@ package com.company.mentoring.view.assignmentcreating;
 
 
 import com.company.mentoring.entity.Assignment;
+import com.company.mentoring.entity.AssignmentStatus;
 import com.vaadin.flow.component.ClickEvent;
 import io.jmix.bpmflowui.processform.ProcessFormContext;
 import io.jmix.bpmflowui.processform.annotation.Outcome;
@@ -51,17 +52,23 @@ public class AssignmentCreatingView extends StandardView {
 
     @Subscribe("approveBtn")
     protected void onApproveBtnClick(ClickEvent<JmixButton> event) {
+
+        Assignment assignment = assignmentDc.getItem();
+        // меняем статус заявки
+        assignment.setStatus(AssignmentStatus.CLOSED);
+        // сохраняем заявку
+        dataManager.save(assignment);
+
+        // завершаем BPM-задачу с outcome approve
         processFormContext.taskCompletion()
                 .withOutcome("approve")
                 .complete();
+
         closeWithDefaultAction();
     }
 
     @Subscribe("cancelBtn")
     protected void onCancelBtnClick(ClickEvent<JmixButton> event) {
-        processFormContext.taskCompletion()
-                .withOutcome("cancel")
-                .complete();
         closeWithDefaultAction();
     }
 }

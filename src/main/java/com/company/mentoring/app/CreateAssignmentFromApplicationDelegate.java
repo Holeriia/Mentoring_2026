@@ -34,10 +34,53 @@ public class CreateAssignmentFromApplicationDelegate implements JavaDelegate {
         Assignment assignment = dataManager.create(Assignment.class);
         assignment.setApplication(app);
         assignment.setTitle(app.getTitle());
+        assignment.setWorkspace(app.getWorkspace());
         assignment.setDescription(app.getDescription());
         assignment.setStatus(AssignmentStatus.ACTIVE);
 
-        // команды можно скопировать так
+        dataManager.save(assignment);
+
+        User approverUser = (User) execution.getVariable("approverUsername");
+        // 1. Берём существующую команду у заявки
+        Team existingTeam = app.getTeams().stream()
+                .findFirst()
+                .orElseThrow(() ->
+                        new IllegalStateException("Application has no teams")
+                );
+
+        // 2. Определяем противоположный тип
+        TeamType oppositeType =
+                existingTeam.getTeamType() == TeamType.SUPERVISORS
+                        ? TeamType.EXECUTORS
+                        : TeamType.SUPERVISORS;
+
+        // 3. Создаём новую команду противоположного типа
+        Team newTeam = dataManager.create(Team.class);
+        newTeam.setApplication(app);
+        newTeam.setTeamType(oppositeType);
+
+        dataManager.save(newTeam);
+
+        // 4. Находим WorkspaceParticipant для approverUser
+        WorkspaceParticipant participant = dataManager.load(WorkspaceParticipant.class)
+                .query("""
+            select wp from WorkspaceParticipant wp
+            where wp.workspace = :workspace
+              and wp.user = :user
+        """)
+                .parameter("workspace", app.getWorkspace())
+                .parameter("user", approverUser)
+                .one();
+
+        // 5. Добавляем участника в новую команду
+        TeamMember member = dataManager.create(TeamMember.class);
+        member.setTeam(newTeam);
+        member.setParticipant(participant);
+
+        dataManager.save(member);
+        app.getTeams().add(newTeam);
+
+        // 6. копируем команды из заявки в назначение
         assignment.setExecutorsTeam(app.getTeams().stream()
                 .filter(t -> t.getTeamType() == TeamType.EXECUTORS)
                 .findFirst()

@@ -21,6 +21,7 @@
                     </property>
                 </property>
                 <property name="workspace" fetchPlan="_instance_name"/>
+                <property name="application" fetchPlan="_base"/>
             </fetchPlan>
             <loader id="assignmentDl"/>
         </instance>
@@ -40,6 +41,7 @@
             </responsiveSteps>
             <textField id="titleField" property="title"/>
             <textArea id="descriptionField" height="9.5em" property="description"/>
+            <textField id="applicationField" property="application"/>
             <dateTimePicker id="createdAtField" property="createdAt"/>
             <entityPicker id="executorsTeamField" property="executorsTeam">
                 <actions>

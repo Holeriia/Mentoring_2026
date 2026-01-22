@@ -32,72 +32,80 @@
 
     <layout spacing="true" padding="true">
 
-        <vbox id="applicationsBox" padding="false" spacing="true" width="100%">
-            <h3 text="Мои заявки"/>
+        <tabSheet id="mainTabs" width="100%">
 
-            <hbox id="buttonsPanel" classNames="buttons-panel">
-                <button id="createButton" text="Create" icon="PLUS"/>
-                <button id="editButton" action="applicationsDataGrid.edit"/>
-                <button id="removeButton" action="applicationsDataGrid.remove"/>
-            </hbox>
+            <tab id="findTeamTab" label="Команды">
+                <vbox id="participantsBox" padding="false" spacing="true" width="100%">
+                    <h3 text="Участники пространства"/>
+                    <dataGrid id="participantsDataGrid"
+                              width="100%"
+                              minHeight="15em"
+                              dataContainer="participantsDc">
+                        <columns>
+                            <column property="user.username" header="Логин"/>
+                            <column property="user.firstName" header="Имя"/>
+                            <column property="user.lastName" header="Фамилия"/>
+                            <column property="contextRole" header="Роль в пространстве"/>
+                            <column property="maxAssignments" header="Лимит мест"/>
+                        </columns>
+                    </dataGrid>
+                </vbox>
+            </tab>
 
-            <dataGrid id="applicationsDataGrid" width="100%" dataContainer="applicationsDc">
-                <actions>
-                    <action id="create" type="list_create">
-                        <properties>
-                            <property name="openMode" value="DIALOG"/>
-                        </properties>
-                    </action>
-                    <action id="edit" type="list_edit">
-                        <properties>
-                            <property name="openMode" value="DIALOG"/>
-                        </properties>
-                    </action>
-                    <action id="remove" type="list_remove"/>
-                </actions>
-                <columns>
-                    <column property="title"/>
-                    <column property="status"/>
-                </columns>
-            </dataGrid>
-        </vbox>
+            <tab id="findLeaderTab" label="Найти руководителя">
+                <vbox spacing="true" width="100%">
+                    <vbox id="applicationsBox" padding="false" spacing="true" width="100%">
+                        <h3 text="Мои заявки"/>
 
-        <vbox id="myTasksBox" padding="false" spacing="true" width="100%">
-            <h3 text="Мои задачи"/>
-            <dataGrid id="tasksDataGrid"
-                      width="100%"
-                      minHeight="15em"
-                      dataContainer="tasksDc">
-                <columns>
-                    <!-- название задачи -->
-                    <column property="name" header="Задача"/>
-                    <!-- когда задача создана (пришла) -->
-                    <column property="createTime" header="Получена" autoWidth="true"/>
-                    <!-- если нужно, можно добавить dueDate -->
-                    <!-- <column property="dueDate" header="Срок" autoWidth="true"/> -->
-                </columns>
-                <actions>
-                    <!-- действие для открытия формы задачи -->
-                    <action id="openTaskForm" type="list_edit"/>
-                </actions>
-            </dataGrid>
-        </vbox>
+                        <hbox id="buttonsPanel" classNames="buttons-panel">
+                            <button id="createButton" text="Create" icon="PLUS"/>
+                            <button id="editButton" action="applicationsDataGrid.edit"/>
+                            <button id="removeButton" action="applicationsDataGrid.remove"/>
+                        </hbox>
 
-        <vbox id="participantsBox" padding="false" spacing="true" width="100%">
-            <h3 text="Участники пространства"/>
-            <dataGrid id="participantsDataGrid"
-                      width="100%"
-                      minHeight="15em"
-                      dataContainer="participantsDc">
-                <columns>
-                    <column property="user.username" header="Логин"/>
-                    <column property="user.firstName" header="Имя"/>
-                    <column property="user.lastName" header="Фамилия"/>
-                    <column property="contextRole" header="Роль в пространстве"/>
-                    <column property="maxAssignments" header="Лимит мест"/>
-                </columns>
-            </dataGrid>
-        </vbox>
+                        <dataGrid id="applicationsDataGrid" width="100%" dataContainer="applicationsDc">
+                            <actions>
+                                <action id="create" type="list_create">
+                                    <properties>
+                                        <property name="openMode" value="DIALOG"/>
+                                    </properties>
+                                </action>
+                                <action id="edit" type="list_edit">
+                                    <properties>
+                                        <property name="openMode" value="DIALOG"/>
+                                    </properties>
+                                </action>
+                                <action id="remove" type="list_remove"/>
+                            </actions>
+                            <columns>
+                                <column property="title"/>
+                                <column property="status"/>
+                            </columns>
+                        </dataGrid>
+                    </vbox>
 
+                    <vbox id="myTasksBox" padding="false" spacing="true" width="100%">
+                        <h3 text="Мои задачи"/>
+                        <dataGrid id="tasksDataGrid"
+                                  width="100%"
+                                  minHeight="15em"
+                                  dataContainer="tasksDc">
+                            <columns>
+                                <!-- название задачи -->
+                                <column property="name" header="Задача"/>
+                                <!-- когда задача создана (пришла) -->
+                                <column property="createTime" header="Получена" autoWidth="true"/>
+                                <!-- если нужно, можно добавить dueDate -->
+                                <!-- <column property="dueDate" header="Срок" autoWidth="true"/> -->
+                            </columns>
+                            <actions>
+                                <!-- действие для открытия формы задачи -->
+                                <action id="openTaskForm" type="list_edit"/>
+                            </actions>
+                        </dataGrid>
+                    </vbox>
+                </vbox>
+            </tab>
+        </tabSheet>
     </layout>
 </view>

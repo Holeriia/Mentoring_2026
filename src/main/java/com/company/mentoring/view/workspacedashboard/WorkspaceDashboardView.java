@@ -74,6 +74,17 @@ public class WorkspaceDashboardView extends StandardView {
 
             participantsDl.load();
             applicationsDl.load();
+
+            // подставляем имя в заголовок страницы
+            Workspace workspace = dataManager.load(Workspace.class)
+                    .id(workspaceId)
+                    .one();
+
+            String title = String.format(
+                    messages.getMessage(WorkspaceDashboardView.class, "workspaceDashboardView.titleWithName"),
+                    workspace.getName()
+            );
+            setPageTitle(title);
         }
     }
 

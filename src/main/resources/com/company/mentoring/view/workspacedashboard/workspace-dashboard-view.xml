@@ -23,6 +23,11 @@
                 </query>
             </loader>
         </collection>
+
+        <collection id="tasksDc"
+                    class="io.jmix.bpm.entity.TaskData">
+            <loader id="tasksDl"/>
+        </collection>
     </data>
 
     <layout spacing="true" padding="true">
@@ -56,6 +61,28 @@
                 </columns>
             </dataGrid>
         </vbox>
+
+        <vbox id="myTasksBox" padding="false" spacing="true" width="100%">
+            <h3 text="Мои задачи"/>
+            <dataGrid id="tasksDataGrid"
+                      width="100%"
+                      minHeight="15em"
+                      dataContainer="tasksDc">
+                <columns>
+                    <!-- название задачи -->
+                    <column property="name" header="Задача"/>
+                    <!-- когда задача создана (пришла) -->
+                    <column property="createTime" header="Получена" autoWidth="true"/>
+                    <!-- если нужно, можно добавить dueDate -->
+                    <!-- <column property="dueDate" header="Срок" autoWidth="true"/> -->
+                </columns>
+                <actions>
+                    <!-- действие для открытия формы задачи -->
+                    <action id="openTaskForm" type="list_edit"/>
+                </actions>
+            </dataGrid>
+        </vbox>
+
         <vbox id="participantsBox" padding="false" spacing="true" width="100%">
             <h3 text="Участники пространства"/>
             <dataGrid id="participantsDataGrid"

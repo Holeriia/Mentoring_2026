@@ -10,12 +10,28 @@ import com.company.mentoring.view.application.ApplicationStartView;
 import com.company.mentoring.view.main.MainView;
 import com.vaadin.flow.component.ClickEvent;
 import com.vaadin.flow.router.Route;
+import io.jmix.bpm.entity.TaskData;
+import io.jmix.bpm.entity.UserGroup;
+import io.jmix.bpm.multitenancy.BpmTenantProvider;
+import io.jmix.bpm.service.UserGroupService;
+import io.jmix.bpm.util.FlowableEntitiesConverter;
+import io.jmix.bpmflowui.processform.ProcessFormViews;
 import io.jmix.core.DataManager;
+import io.jmix.core.LoadContext;
+import io.jmix.core.usersubstitution.CurrentUserSubstitution;
 import io.jmix.flowui.DialogWindows;
 import io.jmix.flowui.action.list.CreateAction;
+import io.jmix.flowui.component.grid.DataGrid;
+import io.jmix.flowui.component.radiobuttongroup.JmixRadioButtonGroup;
+import io.jmix.flowui.kit.action.ActionPerformedEvent;
 import io.jmix.flowui.kit.component.button.JmixButton;
+import io.jmix.flowui.model.CollectionContainer;
 import io.jmix.flowui.model.CollectionLoader;
 import io.jmix.flowui.view.*;
+import org.apache.commons.collections4.CollectionUtils;
+import org.flowable.engine.TaskService;
+import org.flowable.task.api.Task;
+import org.flowable.task.api.TaskQuery;
 import org.springframework.beans.factory.annotation.Autowired;
 
 import java.util.List;
@@ -100,5 +116,96 @@ public class WorkspaceDashboardView extends StandardView {
     @Subscribe(id = "createButton", subject = "clickListener")
     public void onCreateButtonClick(final ClickEvent<JmixButton> event) {
         openApplicationCreateDialog();
+    }
+
+    @ViewComponent
+    private CollectionLoader<TaskData> tasksDl;
+
+    @ViewComponent
+    private CollectionContainer<TaskData> tasksDc;
+
+    @ViewComponent
+    private DataGrid<TaskData> tasksDataGrid;
+
+    // Flowable & BPM API
+    @Autowired
+    private TaskService taskService;
+    @Autowired
+    private FlowableEntitiesConverter entitiesConverter;
+    @Autowired(required = false)
+    private BpmTenantProvider bpmTenantProvider;
+    @Autowired
+    private UserGroupService userGroupService;
+    @Autowired
+    private CurrentUserSubstitution currentUserSubstitution;
+
+    private String currentUserName;
+    private List<String> userGroupCodes;
+
+    @Subscribe
+    public void onBeforeShow(BeforeShowEvent event) {
+        currentUserName = currentUserSubstitution.getEffectiveUser().getUsername();
+        userGroupCodes = userGroupService.getUserGroups(currentUserName)
+                .stream()
+                .map(UserGroup::getCode)
+                .toList();
+
+        tasksDl.load();
+    }
+
+    @Install(to = "tasksDl", target = Target.DATA_LOADER)
+    private List<TaskData> tasksDlLoadDelegate(LoadContext<TaskData> loadContext) {
+        TaskQuery taskQuery = taskService.createTaskQuery().active();
+        addAssignmentCondition(taskQuery);
+        long count = taskQuery.count();
+        taskQuery.orderByTaskCreateTime().desc();
+        List<Task> tasks = taskQuery.list();
+
+        List<TaskData> result = tasks.stream()
+                .map(entitiesConverter::createTaskData)
+                .toList();
+
+        return result;
+    }
+
+    @Autowired
+    private ProcessFormViews processFormViews;
+
+    @Subscribe("tasksDataGrid.openTaskForm")
+    private void onTasksDataGridOpenTaskForm(ActionPerformedEvent event) {
+        TaskData selected = tasksDc.getItemOrNull();
+        if (selected == null) {
+            return;
+        }
+
+        Task task = taskService.createTaskQuery()
+                .taskId(selected.getId())
+                .singleResult();
+
+        if (task == null) {
+            return;
+        }
+
+        processFormViews.openTaskProcessForm(task, this, dialog ->
+                dialog.addAfterCloseListener(afterClose -> tasksDl.load())
+        );
+    }
+
+    private void addAssignmentCondition(TaskQuery taskQuery) {
+        taskQuery.or();
+
+        // пользователь исполнитель или кандидат
+        taskQuery.taskCandidateOrAssigned(currentUserName);
+
+        // плюс задачи по его группам
+        if (userGroupCodes != null && !userGroupCodes.isEmpty()) {
+            taskQuery.taskCandidateGroupIn(userGroupCodes);
+        }
+
+        taskQuery.endOr();
+
+        if (bpmTenantProvider != null && bpmTenantProvider.isMultitenancyActive()) {
+            taskQuery.taskTenantId(bpmTenantProvider.getCurrentUserTenantId());
+        }
     }
 }

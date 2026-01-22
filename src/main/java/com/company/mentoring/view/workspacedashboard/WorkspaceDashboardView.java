@@ -9,6 +9,9 @@ import com.company.mentoring.entity.WorkspaceParticipant;
 import com.company.mentoring.view.application.ApplicationStartView;
 import com.company.mentoring.view.main.MainView;
 import com.vaadin.flow.component.ClickEvent;
+import com.vaadin.flow.component.html.Span;
+import com.vaadin.flow.data.renderer.ComponentRenderer;
+import com.vaadin.flow.data.renderer.Renderer;
 import com.vaadin.flow.router.Route;
 import io.jmix.bpm.entity.TaskData;
 import io.jmix.bpm.entity.UserGroup;
@@ -18,6 +21,7 @@ import io.jmix.bpm.util.FlowableEntitiesConverter;
 import io.jmix.bpmflowui.processform.ProcessFormViews;
 import io.jmix.core.DataManager;
 import io.jmix.core.LoadContext;
+import io.jmix.core.Messages;
 import io.jmix.core.usersubstitution.CurrentUserSubstitution;
 import io.jmix.flowui.DialogWindows;
 import io.jmix.flowui.action.list.CreateAction;
@@ -208,4 +212,26 @@ public class WorkspaceDashboardView extends StandardView {
             taskQuery.taskTenantId(bpmTenantProvider.getCurrentUserTenantId());
         }
     }
+
+
+    /**
+     * для перевода названия задач
+     */
+    @Autowired
+    private Messages messages;
+
+    @Supply(to = "tasksDataGrid.name", subject = "renderer")
+    protected Renderer<TaskData> taskNameRenderer() {
+        return new ComponentRenderer<>(taskData -> {
+            String rawName = taskData.getName(); // "task.approve", "task.replyComment", ...
+            if (rawName == null) {
+                return new Span("");
+            }
+
+            String localized = messages.getMessage("com.company.mentoring.bpm", rawName);
+            // Messages.getMessage(...) никогда не возвращает null — если нет ключа, вернёт rawName
+            return new Span(localized);
+        });
+    }
+
 }

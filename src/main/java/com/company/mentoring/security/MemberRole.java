@@ -25,9 +25,6 @@ public interface MemberRole {
     @EntityPolicy(entityClass = TeamMember.class, actions = EntityPolicyAction.ALL)
     void teamMember();
 
-    @EntityPolicy(entityClass = Workspace.class, actions = EntityPolicyAction.READ)
-    void workspace();
-
     @EntityAttributePolicy(entityClass = ApplicationClarification.class, attributes = "*", action = EntityAttributePolicyAction.MODIFY)
     @EntityPolicy(entityClass = ApplicationClarification.class, actions = EntityPolicyAction.ALL)
     void applicationClarification();
@@ -40,13 +37,18 @@ public interface MemberRole {
     @EntityPolicy(entityClass = Assignment.class, actions = EntityPolicyAction.ALL)
     void assignment();
 
+    @EntityAttributePolicy(entityClass = WorkspaceParticipant.class, attributes = "*", action = EntityAttributePolicyAction.VIEW)
     @EntityPolicy(entityClass = WorkspaceParticipant.class, actions = EntityPolicyAction.READ)
     void workspaceParticipant();
 
     @EntityPolicy(entityClass = User.class, actions = EntityPolicyAction.READ)
     void user();
 
-    @MenuPolicy(menuIds = {"WorkspaceDashboardView", "Workspace.list", "User.list"})
-    @ViewPolicy(viewIds = {"WorkspaceDashboardView", "Workspace.list", "User.list", "Workspace.detail", "Application.approval", "Application.detail", "Assignment.detail", "Assignment.list", "ApplicationClarification.detail"})
+    @MenuPolicy(menuIds = {"WorkspaceDashboardView", "Workspace.list", "Assignment.list"})
+    @ViewPolicy(viewIds = {"WorkspaceDashboardView", "Workspace.list", "Workspace.detail", "Application.approval", "Application.detail", "Assignment.detail", "Assignment.list", "ApplicationClarification.detail", "Assignment.creating", "ApplicationPriority.detail", "Application.comment"})
     void screens();
+
+    @EntityAttributePolicy(entityClass = Workspace.class, attributes = "*", action = EntityAttributePolicyAction.VIEW)
+    @EntityPolicy(entityClass = Workspace.class, actions = EntityPolicyAction.READ)
+    void workspace();
 }

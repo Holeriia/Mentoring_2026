@@ -20,7 +20,7 @@
     <facets>
         <dataLoadCoordinator auto="true"/>
         <urlQueryParameters>
-            <genericFilter component="genericFilter"/>
+<!--            <genericFilter component="genericFilter"/>-->
             <pagination component="pagination"/>
         </urlQueryParameters>
     </facets>
@@ -29,14 +29,14 @@
         <action id="discardAction" type="lookup_discard"/>
     </actions>
     <layout>
-        <genericFilter id="genericFilter"
-                       dataLoader="workspacesDl">
-            <properties include=".*"/>
-        </genericFilter>
+<!--        <genericFilter id="genericFilter"-->
+<!--                       dataLoader="workspacesDl">-->
+<!--            <properties include=".*"/>-->
+<!--        </genericFilter>-->
         <hbox id="buttonsPanel" classNames="buttons-panel">
-            <button id="createButton" action="workspacesDataGrid.createAction"/>
-            <button id="editButton" action="workspacesDataGrid.editAction"/>
-            <button id="removeButton" action="workspacesDataGrid.removeAction"/>
+            <button id="createButton" text="msg://com.company.mentoring.view.workspacedashboard/create" action="workspacesDataGrid.createAction"/>
+            <button id="editButton" text="msg://com.company.mentoring.view.application/editAction" action="workspacesDataGrid.editAction"/>
+            <button id="removeButton" text="msg://com.company.mentoring.view.application/remoteAction" action="workspacesDataGrid.removeAction"/>
             <simplePagination id="pagination" dataLoader="workspacesDl"/>
         </hbox>
         <dataGrid id="workspacesDataGrid"
@@ -54,7 +54,7 @@
                 <column property="description"/>
                 <column property="status"/>
                 <column property="owner"/>
-                <column key="goToApplications" header="to dashboard"/>
+                <column key="goToApplications" header="msg://headerToWorkspace"/>
             </columns>
         </dataGrid>
         <hbox id="lookupActions" visible="false">

@@ -44,16 +44,21 @@ public class WorkspaceParticipant {
 
         String firstName = user.getFirstName();
         String lastName = user.getLastName();
-        String username = user.getUsername();
+        String patronymic = user.getPatronymic();
 
-        if (firstName == null && lastName == null && username == null) {
-            return user.getUsername(); // fallback
+        // fallback на username, если все ФИО пустые
+        if ((firstName == null || firstName.isBlank()) &&
+                (lastName == null || lastName.isBlank()) &&
+                (patronymic == null || patronymic.isBlank())) {
+            return user.getUsername() != null ? user.getUsername() : "";
         }
 
+        // Формируем строку Фамилия Имя Отчество
         return String.format("%s %s %s",
-                firstName != null ? firstName : "",
                 lastName != null ? lastName : "",
-                username != null ? username : "").trim();
+                firstName != null ? firstName : "",
+                patronymic != null ? patronymic : ""
+        ).trim();
     }
 
 

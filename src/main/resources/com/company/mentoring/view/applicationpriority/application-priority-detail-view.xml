@@ -6,12 +6,32 @@
         <instance id="applicationPriorityDc"
                   class="com.company.mentoring.entity.ApplicationPriority">
             <fetchPlan extends="_base">
+                <property name="application">
+                    <property name="initiator">
+                        <property name="contextRole"/>
+                        <property name="workspace"/>
+                    </property>
+                </property>
                 <property name="participant">
                     <property name="user" fetchPlan="_instance_name"/>
                 </property>
             </fetchPlan>
-            <loader id="applicationPriorityDl"/>
         </instance>
+
+        <collection id="participantsDc"
+                    class="com.company.mentoring.entity.WorkspaceParticipant">
+            <fetchPlan extends="_base"/>
+            <loader id="participantsDl">
+                <query>
+                    <![CDATA[
+                select p from WorkspaceParticipant p
+                where p.workspace = :workspace
+                  and p.contextRole = :role
+            ]]>
+                </query>
+            </loader>
+        </collection>
+
     </data>
     <facets>
         <dataLoadCoordinator auto="true"/>
@@ -26,13 +46,10 @@
                 <responsiveStep minWidth="0" columns="1"/>
                 <responsiveStep minWidth="40em" columns="2"/>
             </responsiveSteps>
-            <entityPicker id="participantField" property="participant">
-                <actions>
-                    <action id="entityLookupAction" type="entity_lookup"/>
-                    <action id="entityClearAction" type="entity_clear"/>
-                </actions>
-            </entityPicker>
-            <textField id="priorityNumberField" property="priorityNumber"/>
+            <textField id="priorityNumberField" property="priorityNumber" readOnly="true"/>
+            <entityComboBox id="participantField"
+                            property="participant"
+                            itemsContainer="participantsDc"/>
         </formLayout>
         <hbox id="detailActions">
             <button id="saveAndCloseButton" action="saveAction"/>

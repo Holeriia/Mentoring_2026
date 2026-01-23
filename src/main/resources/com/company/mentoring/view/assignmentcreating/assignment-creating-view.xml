@@ -4,14 +4,32 @@
 
     <data>
         <instance id="assignmentDc"
-                  class="com.company.mentoring.entity.Assignment"/>
+                  class="com.company.mentoring.entity.Assignment">
+            <fetchPlan extends="_base">
+                <property name="executorsTeam">
+                    <property name="members">
+                        <property name="participant">
+                            <property name="user" fetchPlan="_instance_name"/>
+                        </property>
+                    </property>
+                </property>
+                <property name="supervisorsTeam">
+                    <property name="members">
+                        <property name="participant">
+                            <property name="user" fetchPlan="_instance_name"/>
+                        </property>
+                    </property>
+                </property>
+            </fetchPlan>
+            <loader id="assignmentDl"/>
+        </instance>
     </data>
 
     <layout spacing="true">
 
-        <h3 text="Assignment"/>
+<!--        <h3 text="Assignment"/>-->
 
-        <formLayout>
+        <formLayout id="form" dataContainer="assignmentDc">
             <responsiveSteps>
                 <responsiveStep minWidth="0" columns="1"/>
             </responsiveSteps>
@@ -19,32 +37,29 @@
             <textField
                     id="titleField"
                     label="Название"
-                    dataContainer="assignmentDc"
                     property="title"/>
 
             <textArea
                     id="descriptionField"
                     label="Описание"
-                    dataContainer="assignmentDc"
                     property="description"
                     height="8em"/>
 
             <entityPicker
                     id="executorsTeamField"
                     label="Команда исполнителей"
-                    dataContainer="assignmentDc"
-                    property="executorsTeam"/>
+                    property="executorsTeam"
+                    readOnly="true"/>
 
             <entityPicker
                     id="supervisorsTeamField"
                     label="Команда руководителей"
-                    dataContainer="assignmentDc"
-                    property="supervisorsTeam"/>
+                    property="supervisorsTeam"
+                    readOnly="true"/>
 
             <comboBox
                     id="statusField"
                     label="Статус"
-                    dataContainer="assignmentDc"
                     property="status"
                     readOnly="true"/>
         </formLayout>

@@ -23,8 +23,6 @@
 
     <layout spacing="true">
 
-        <h3 text="Application"/>
-
         <formLayout>
             <responsiveSteps>
                 <responsiveStep minWidth="0" columns="1"/>
@@ -87,17 +85,17 @@
         <hbox justifyContent="END" spacing="true">
             <button
                     id="approveBtn"
-                    text="Approve"
+                    text="msg://Approve"
                     themeNames="primary"/>
 
             <button
                     id="rejectBtn"
-                    text="Reject"
+                    text="msg://Reject"
                     themeNames="error"/>
 
             <button
                     id="commentBtn"
-                    text="return Application"
+                    text="msg://returnApplication"
                     icon="vaadin:arrow-backward"/>
         </hbox>
 

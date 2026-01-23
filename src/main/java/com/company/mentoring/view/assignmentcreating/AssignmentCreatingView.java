@@ -11,6 +11,7 @@ import io.jmix.bpmflowui.processform.annotation.ProcessVariable;
 import io.jmix.core.DataManager;
 import io.jmix.flowui.kit.component.button.JmixButton;
 import io.jmix.flowui.model.InstanceContainer;
+import io.jmix.flowui.model.InstanceLoader;
 import io.jmix.flowui.view.*;
 import org.springframework.beans.factory.annotation.Autowired;
 
@@ -39,15 +40,16 @@ public class AssignmentCreatingView extends StandardView {
     @ProcessVariable(name = "assignmentId")
     private UUID assignmentId;
 
+    @ViewComponent
+    private InstanceLoader<Assignment> assignmentDl;
+
     @Subscribe
     public void onBeforeShow(BeforeShowEvent event) {
-        if (assignmentId == null) return;
-
-        Assignment assignment = dataManager.load(Assignment.class)
-                .id(assignmentId)
-                .one();
-
-        assignmentDc.setItem(assignment);
+        if (assignmentId == null) {
+            return;
+        }
+        assignmentDl.setEntityId(assignmentId);
+        assignmentDl.load();
     }
 
     @Subscribe("approveBtn")

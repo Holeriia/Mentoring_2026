@@ -40,19 +40,22 @@ public class Team {
     private List<TeamMember> members;
 
     @InstanceName
-    @DependsOnProperties("members")
+    @DependsOnProperties({"members"})
     public String getInstanceName() {
-        if (members == null || members.isEmpty()) {
-            return ""; // пустая команда
-        }
+        if (members == null || members.isEmpty()) return "";
 
-        // Собираем список участников через перенос строки
         return members.stream()
-                .map(TeamMember::getParticipant)
-                .filter(Objects::nonNull)
-                .map(WorkspaceParticipant::getInstanceName)
+                // безопасно получаем participant
+                .map(m -> {
+                    try {
+                        return m.getParticipant() != null ? m.getParticipant().getInstanceName() : "";
+                    } catch (Exception e) {
+                        return ""; // если participant не загружен, возвращаем пустую строку
+                    }
+                })
                 .filter(s -> !s.isBlank())
-                .collect(Collectors.joining("\n"));
+                .reduce((s1, s2) -> s1 + "\n" + s2)
+                .orElse("");
     }
 
     public List<TeamMember> getMembers() {

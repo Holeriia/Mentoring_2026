@@ -52,15 +52,15 @@
                 </vbox>
             </tab>
 
-            <tab id="findLeaderTab" label="Найти руководителя">
+            <tab id="findLeaderTab" label="Заявки">
                 <vbox spacing="true" width="100%">
                     <vbox id="applicationsBox" padding="false" spacing="true" width="100%">
                         <h3 text="Мои заявки"/>
 
                         <hbox id="buttonsPanel" classNames="buttons-panel">
-                            <button id="createButton" text="Create" icon="PLUS"/>
-                            <button id="editButton" action="applicationsDataGrid.edit"/>
-                            <button id="removeButton" action="applicationsDataGrid.remove"/>
+                            <button id="createButton" text="msg://create" icon="PLUS"/>
+                            <button id="editButton" text="msg://com.company.mentoring.view.application/editAction" action="applicationsDataGrid.edit"/>
+                            <button id="removeButton" text="msg://com.company.mentoring.view.application/remoteAction" action="applicationsDataGrid.remove"/>
                         </hbox>
 
                         <dataGrid id="applicationsDataGrid" width="100%" dataContainer="applicationsDc">

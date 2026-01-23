@@ -5,11 +5,15 @@ import io.jmix.core.entity.annotation.JmixGeneratedValue;
 import io.jmix.core.entity.annotation.OnDelete;
 import io.jmix.core.entity.annotation.OnDeleteInverse;
 import io.jmix.core.metamodel.annotation.Composition;
+import io.jmix.core.metamodel.annotation.DependsOnProperties;
+import io.jmix.core.metamodel.annotation.InstanceName;
 import io.jmix.core.metamodel.annotation.JmixEntity;
 import jakarta.persistence.*;
 
 import java.util.List;
+import java.util.Objects;
 import java.util.UUID;
+import java.util.stream.Collectors;
 
 @JmixEntity
 @Table(name = "TEAM", indexes = {
@@ -34,6 +38,22 @@ public class Team {
     @OnDelete(DeletePolicy.CASCADE)
     @OneToMany(mappedBy = "team")
     private List<TeamMember> members;
+
+    @InstanceName
+    @DependsOnProperties("members")
+    public String getInstanceName() {
+        if (members == null || members.isEmpty()) {
+            return ""; // пустая команда
+        }
+
+        // Собираем список участников через перенос строки
+        return members.stream()
+                .map(TeamMember::getParticipant)
+                .filter(Objects::nonNull)
+                .map(WorkspaceParticipant::getInstanceName)
+                .filter(s -> !s.isBlank())
+                .collect(Collectors.joining("\n"));
+    }
 
     public List<TeamMember> getMembers() {
         return members;

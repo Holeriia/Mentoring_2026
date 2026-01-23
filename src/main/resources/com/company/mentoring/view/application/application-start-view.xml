@@ -27,10 +27,6 @@
             <collection id="prioritiesDc" property="priorities"/>
             <collection id="teamsDc" property="teams"/>
         </instance>
-
-<!--        <collection id="executorMembersDc" class="com.company.mentoring.entity.TeamMember"/>-->
-<!--        <collection id="supervisorMembersDc" class="com.company.mentoring.entity.TeamMember"/>-->
-
     </data>
     <facets>
         <dataLoadCoordinator auto="true"/>
@@ -45,29 +41,15 @@
                 <responsiveStep minWidth="0" columns="1"/>
                 <responsiveStep minWidth="40em" columns="2"/>
             </responsiveSteps>
-            <entityPicker id="workspaceField" property="workspace">
-                <actions>
-                    <action id="entityLookupAction" type="entity_lookup"/>
-                    <action id="entityClearAction" type="entity_clear"/>
-                </actions>
-            </entityPicker>
-            <entityPicker id="initiatorField" property="initiator">
-                <actions>
-                    <action id="entityLookupAction" type="entity_lookup"/>
-                    <action id="entityClearAction" type="entity_clear"/>
-                </actions>
-            </entityPicker>
             <textField id="titleField" property="title"/>
             <textArea id="descriptionField" height="9.5em" property="description"/>
-            <select id="statusField" property="status"/>
-            <textField id="currentPriorityIndexField" property="currentPriorityIndex"/>
-            <textField id="processInstanceIdField" property="processInstanceId"/>
+            <select id="statusField" property="status" readOnly="true"/>
         </formLayout>
         <h4 text="msg://com.company.mentoring.entity/Application.priorities"/>
         <hbox id="prioritiesButtonsPanel" classNames="buttons-panel">
-            <button action="prioritiesDataGrid.createAction"/>
-            <button action="prioritiesDataGrid.editAction"/>
-            <button action="prioritiesDataGrid.removeAction"/>
+            <button action="prioritiesDataGrid.createAction" text="msg://createAction"/>
+            <button action="prioritiesDataGrid.editAction" text="msg://editAction"/>
+            <button action="prioritiesDataGrid.removeAction" text="msg://remoteAction"/>
         </hbox>
         <dataGrid id="prioritiesDataGrid" dataContainer="prioritiesDc" width="100%" minHeight="20em">
             <actions>
@@ -88,65 +70,37 @@
                 <column property="participant"/>
             </columns>
         </dataGrid>
-        <h4 text="msg://com.company.mentoring.entity/Application.teams"/>
-        <hbox id="teamsButtonsPanel" classNames="buttons-panel">
-            <button action="teamsDataGrid.createAction"/>
-            <button action="teamsDataGrid.editAction"/>
-            <button action="teamsDataGrid.removeAction"/>
-        </hbox>
-        <dataGrid id="teamsDataGrid" dataContainer="teamsDc" width="100%" minHeight="20em">
-            <actions>
-                <action id="createAction" type="list_create">
-                    <properties>
-                        <property name="openMode" value="DIALOG"/>
-                    </properties>
-                </action>
-                <action id="editAction" type="list_edit">
-                    <properties>
-                        <property name="openMode" value="DIALOG"/>
-                    </properties>
-                </action>
-                <action id="removeAction" type="list_remove"/>
-            </actions>
-            <columns>
-                <column property="teamType"/>
-            </columns>
-        </dataGrid>
 
-<!--        <vbox id="executorsBox" spacing="true" width="100%">-->
-<!--            <h4 text="Команда исполнителей (EXECUTORS)"/>-->
-<!--            <hbox classNames="buttons-panel">-->
-<!--                <button id="addExecutorBtn" text="Добавить исполнителя" icon="PLUS"/>-->
-<!--                <button action="executorsTable.remove"/>-->
-<!--            </hbox>-->
-<!--            <dataGrid id="executorsTable" dataContainer="executorMembersDc" width="100%" height="150px">-->
-<!--                <actions><action id="remove" type="list_remove"/></actions>-->
-<!--                <columns>-->
-<!--                    <column property="participant.user.firstName"/>-->
-<!--                    <column property="participant.user.lastName"/>-->
-<!--                </columns>-->
-<!--            </dataGrid>-->
-<!--        </vbox>-->
-
-<!--        <vbox id="supervisorsBox" spacing="true" width="100%">-->
-<!--            <h4 text="Команда руководителей (SUPERVISORS)"/>-->
-<!--            <hbox classNames="buttons-panel">-->
-<!--                <button id="addSupervisorBtn" text="Добавить супервайзера" icon="PLUS"/>-->
-<!--                <button action="supervisorsTable.remove"/>-->
-<!--            </hbox>-->
-<!--            <dataGrid id="supervisorsTable" dataContainer="supervisorMembersDc" width="100%" height="150px">-->
-<!--                <actions><action id="remove" type="list_remove"/></actions>-->
-<!--                <columns>-->
-<!--                    <column property="participant.user.firstName"/>-->
-<!--                    <column property="participant.user.lastName"/>-->
-<!--                </columns>-->
-<!--            </dataGrid>-->
-<!--        </vbox>-->
+<!--        <h4 text="msg://com.company.mentoring.entity/Application.teams"/>-->
+<!--        <hbox id="teamsButtonsPanel" classNames="buttons-panel">-->
+<!--            <button action="teamsDataGrid.createAction"/>-->
+<!--            <button action="teamsDataGrid.editAction"/>-->
+<!--            <button action="teamsDataGrid.removeAction"/>-->
+<!--        </hbox>-->
+<!--        <dataGrid id="teamsDataGrid" dataContainer="teamsDc" width="100%" minHeight="20em">-->
+<!--            <actions>-->
+<!--                <action id="createAction" type="list_create">-->
+<!--                    <properties>-->
+<!--                        <property name="openMode" value="DIALOG"/>-->
+<!--                    </properties>-->
+<!--                </action>-->
+<!--                <action id="editAction" type="list_edit">-->
+<!--                    <properties>-->
+<!--                        <property name="openMode" value="DIALOG"/>-->
+<!--                    </properties>-->
+<!--                </action>-->
+<!--                <action id="removeAction" type="list_remove"/>-->
+<!--            </actions>-->
+<!--            <columns>-->
+<!--                <column property="teamType"/>-->
+<!--                <column property="members"/>-->
+<!--            </columns>-->
+<!--        </dataGrid>-->
 
         <hbox id="detailActions">
-            <button id="saveAndCloseButton" action="saveAction"/>
-            <button id="closeButton" action="closeAction"/>
-            <button id="startProcessBtn" icon="ALIGN_RIGHT" text="send application"/>
+<!--            <button id="saveAndCloseButton" action="saveAction"/>-->
+            <button id="startProcessBtn" icon="vaadin:arrow-circle-right" text="msg://applicationStartBtn"/>/>
+            <button id="closeButton" action="closeAction" text="msg://closeAction"/>
         </hbox>
     </layout>
 </view>

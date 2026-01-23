@@ -2,16 +2,12 @@
 
  import com.company.mentoring.app.ApplicationProcessService;
  import com.company.mentoring.entity.Application;
- import com.company.mentoring.view.main.MainView;
  import com.vaadin.flow.component.ClickEvent;
- import com.vaadin.flow.router.Route;
  import io.jmix.flowui.kit.component.button.JmixButton;
+ import io.jmix.flowui.model.DataContext;
  import io.jmix.flowui.view.*;
  import org.springframework.beans.factory.annotation.Autowired;
 
-
-
- @Route(value = "applications/:id", layout = MainView.class)
 @ViewController(id = "Application.detail")
 @ViewDescriptor(path = "application-start-view.xml")
 @EditedEntityContainer("applicationDc")
@@ -21,7 +17,18 @@
      private ApplicationProcessService applicationProcessService;
 
      @Subscribe("startProcessBtn")
-     public void onStartProcessBtnClick(final ClickEvent<JmixButton> event) {
-         applicationProcessService.startProcess(getEditedEntity());
+     public void onStartProcessBtnClick(ClickEvent<JmixButton> event) {
+         // Получаем DataContext текущего экрана
+         var dataContext = getViewData().getDataContext();
+         // Берём текущую редактируемую сущность
+         Application application = getEditedEntity();
+         // Помещаем сущность в DataContext (если ещё не отслеживается)
+         Application trackedApplication = dataContext.merge(application);
+         // Сохраняем сущность и её композиции
+         dataContext.save();
+         // Запускаем процесс
+         applicationProcessService.startProcess(trackedApplication);
+         // Закрываем окно
+         closeWithDefaultAction();
      }
  }

@@ -11,23 +11,36 @@ import java.util.UUID;
 @JmixEntity
 @Table(name = "TEAM_MEMBER", indexes = {
         @Index(name = "IDX_TEAM_MEMBER_TEAM", columnList = "TEAM_ID"),
-        @Index(name = "IDX_TEAM_MEMBER_PARTICIPANT", columnList = "PARTICIPANT_ID")
+        @Index(name = "IDX_TEAM_MEMBER_PARTICIPANT", columnList = "PARTICIPANT_ID"),
+        @Index(name = "IDX_TEAM_MEMBER_LOCAL_ROLE", columnList = "LOCAL_ROLE_ID")
 })
 @Entity
-public class TeamMember {
+public class WorkspaceTeamMember {
     @JmixGeneratedValue
     @Column(name = "ID", nullable = false)
     @Id
     private UUID id;
 
-    @OnDeleteInverse(DeletePolicy.CASCADE)
-    @JoinColumn(name = "TEAM_ID")
-    @ManyToOne(fetch = FetchType.LAZY)
-    private Team team;
-
     @JoinColumn(name = "PARTICIPANT_ID")
     @ManyToOne(fetch = FetchType.LAZY)
     private WorkspaceParticipant participant;
+
+    @OnDeleteInverse(DeletePolicy.CASCADE)
+    @JoinColumn(name = "TEAM_ID")
+    @ManyToOne(fetch = FetchType.LAZY)
+    private WorkspaceTeam workspaceTeam;
+
+    @JoinColumn(name = "LOCAL_ROLE_ID")
+    @ManyToOne(fetch = FetchType.LAZY)
+    private LocalRole localRole;
+
+    public LocalRole getLocalRole() {
+        return localRole;
+    }
+
+    public void setLocalRole(LocalRole localRole) {
+        this.localRole = localRole;
+    }
 
     public WorkspaceParticipant getParticipant() {
         return participant;
@@ -37,12 +50,12 @@ public class TeamMember {
         this.participant = participant;
     }
 
-    public Team getTeam() {
-        return team;
+    public WorkspaceTeam getTeam() {
+        return workspaceTeam;
     }
 
-    public void setTeam(Team team) {
-        this.team = team;
+    public void setTeam(WorkspaceTeam workspaceTeam) {
+        this.workspaceTeam = workspaceTeam;
     }
 
     public UUID getId() {

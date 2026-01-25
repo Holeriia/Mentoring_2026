@@ -15,17 +15,9 @@
                         <property name="user" fetchPlan="_instance_name"/>
                     </property>
                 </property>
-                <property name="teams" fetchPlan="_base">
-                    <property name="members" fetchPlan="_base">
-                        <property name="participant" fetchPlan="_instance_name">
-                            <property name="user" fetchPlan="_instance_name"/>
-                        </property>
-                    </property>
-                </property>
             </fetchPlan>
             <loader id="applicationDl"/>
             <collection id="prioritiesDc" property="priorities"/>
-            <collection id="teamsDc" property="teams"/>
         </instance>
     </data>
     <facets>
@@ -70,33 +62,6 @@
                 <column property="participant"/>
             </columns>
         </dataGrid>
-
-<!--        <h4 text="msg://com.company.mentoring.entity/Application.teams"/>-->
-<!--        <hbox id="teamsButtonsPanel" classNames="buttons-panel">-->
-<!--            <button action="teamsDataGrid.createAction"/>-->
-<!--            <button action="teamsDataGrid.editAction"/>-->
-<!--            <button action="teamsDataGrid.removeAction"/>-->
-<!--        </hbox>-->
-<!--        <dataGrid id="teamsDataGrid" dataContainer="teamsDc" width="100%" minHeight="20em">-->
-<!--            <actions>-->
-<!--                <action id="createAction" type="list_create">-->
-<!--                    <properties>-->
-<!--                        <property name="openMode" value="DIALOG"/>-->
-<!--                    </properties>-->
-<!--                </action>-->
-<!--                <action id="editAction" type="list_edit">-->
-<!--                    <properties>-->
-<!--                        <property name="openMode" value="DIALOG"/>-->
-<!--                    </properties>-->
-<!--                </action>-->
-<!--                <action id="removeAction" type="list_remove"/>-->
-<!--            </actions>-->
-<!--            <columns>-->
-<!--                <column property="teamType"/>-->
-<!--                <column property="members"/>-->
-<!--            </columns>-->
-<!--        </dataGrid>-->
-
         <hbox id="detailActions">
 <!--            <button id="saveAndCloseButton" action="saveAction"/>-->
             <button id="startProcessBtn" icon="vaadin:arrow-circle-right" text="msg://applicationStartBtn"/>/>

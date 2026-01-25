@@ -32,7 +32,7 @@ public class CreateAssignmentFromApplicationDelegate implements JavaDelegate {
                 .one();
 
         Assignment assignment = dataManager.create(Assignment.class);
-        assignment.setApplication(app);
+//        assignment.setApplication(app);
         assignment.setTitle(app.getTitle());
         assignment.setWorkspace(app.getWorkspace());
         assignment.setDescription(app.getDescription());
@@ -41,25 +41,25 @@ public class CreateAssignmentFromApplicationDelegate implements JavaDelegate {
         dataManager.save(assignment);
 
         User approverUser = (User) execution.getVariable("approverUsername");
-        // 1. Берём существующую команду у заявки
-        Team existingTeam = app.getTeams().stream()
-                .findFirst()
-                .orElseThrow(() ->
-                        new IllegalStateException("Application has no teams")
-                );
-
-        // 2. Определяем противоположный тип
-        TeamType oppositeType =
-                existingTeam.getTeamType() == TeamType.SUPERVISORS
-                        ? TeamType.EXECUTORS
-                        : TeamType.SUPERVISORS;
-
-        // 3. Создаём новую команду противоположного типа
-        Team newTeam = dataManager.create(Team.class);
-        newTeam.setApplication(app);
-        newTeam.setTeamType(oppositeType);
-
-        dataManager.save(newTeam);
+//        // 1. Берём существующую команду у заявки
+//        WorkspaceTeam existingTeam = app.getTeams().stream()
+//                .findFirst()
+//                .orElseThrow(() ->
+//                        new IllegalStateException("Application has no teams")
+//                );
+//
+//        // 2. Определяем противоположный тип
+//        TeamType oppositeType =
+//                existingTeam.getTeamType() == TeamType.SUPERVISORS
+//                        ? TeamType.EXECUTORS
+//                        : TeamType.SUPERVISORS;
+//
+//        // 3. Создаём новую команду противоположного типа
+//        WorkspaceTeam newTeam = dataManager.create(WorkspaceTeam.class);
+//        newTeam.setApplication(app);
+//        newTeam.setTeamType(oppositeType);
+//
+//        dataManager.save(newTeam);
 
         // 4. Находим WorkspaceParticipant для approverUser
         WorkspaceParticipant participant = dataManager.load(WorkspaceParticipant.class)
@@ -73,23 +73,23 @@ public class CreateAssignmentFromApplicationDelegate implements JavaDelegate {
                 .one();
 
         // 5. Добавляем участника в новую команду
-        TeamMember member = dataManager.create(TeamMember.class);
-        member.setTeam(newTeam);
-        member.setParticipant(participant);
-
-        dataManager.save(member);
-        app.getTeams().add(newTeam);
-
-        // 6. копируем команды из заявки в назначение
-        assignment.setExecutorsTeam(app.getTeams().stream()
-                .filter(t -> t.getTeamType() == TeamType.EXECUTORS)
-                .findFirst()
-                .orElse(null));
-
-        assignment.setSupervisorsTeam(app.getTeams().stream()
-                .filter(t -> t.getTeamType() == TeamType.SUPERVISORS)
-                .findFirst()
-                .orElse(null));
+//        WorkspaceTeamMember member = dataManager.create(WorkspaceTeamMember.class);
+//        member.setTeam(newTeam);
+//        member.setParticipant(participant);
+//
+//        dataManager.save(member);
+//        app.getTeams().add(newTeam);
+//
+//        // 6. копируем команды из заявки в назначение
+//        assignment.setExecutorsTeam(app.getTeams().stream()
+//                .filter(t -> t.getTeamType() == TeamType.EXECUTORS)
+//                .findFirst()
+//                .orElse(null));
+//
+//        assignment.setSupervisorsTeam(app.getTeams().stream()
+//                .filter(t -> t.getTeamType() == TeamType.SUPERVISORS)
+//                .findFirst()
+//                .orElse(null));
 
         dataManager.save(assignment);
 

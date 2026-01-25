@@ -1,16 +1,17 @@
 <?xml version="1.0" encoding="UTF-8" standalone="no"?>
 <view xmlns="http://jmix.io/schema/flowui/view"
-      title="msg://teamMemberDetailView.title"
+      title="msg://globalTeamMemberDetailView.title"
       focusComponent="form">
     <data>
-        <instance id="teamMemberDc"
-                  class="com.company.mentoring.entity.WorkspaceTeamMember">
+        <instance id="globalTeamMemberDc"
+                  class="com.company.mentoring.entity.GlobalTeamMember">
             <fetchPlan extends="_base">
-                <property name="participant" fetchPlan="_base">
-                    <property name="user" fetchPlan="_instance_name"/>
+                <property name="globalTeam" fetchPlan="_base"/>
+                <property name="user" fetchPlan="_instance_name">
+                    <property name="username"/>
                 </property>
             </fetchPlan>
-            <loader id="teamMemberDl"/>
+            <loader id="globalTeamMemberDl"/>
         </instance>
     </data>
     <facets>
@@ -21,12 +22,18 @@
         <action id="closeAction" type="detail_close"/>
     </actions>
     <layout>
-        <formLayout id="form" dataContainer="teamMemberDc">
+        <formLayout id="form" dataContainer="globalTeamMemberDc">
             <responsiveSteps>
                 <responsiveStep minWidth="0" columns="1"/>
                 <responsiveStep minWidth="40em" columns="2"/>
             </responsiveSteps>
-            <entityPicker id="participantField" property="participant">
+            <entityPicker id="globalTeamField" property="globalTeam">
+                <actions>
+                    <action id="entityLookupAction" type="entity_lookup"/>
+                    <action id="entityClearAction" type="entity_clear"/>
+                </actions>
+            </entityPicker>
+            <entityPicker id="userField" property="user">
                 <actions>
                     <action id="entityLookupAction" type="entity_lookup"/>
                     <action id="entityClearAction" type="entity_clear"/>

@@ -17,12 +17,12 @@ public interface MemberRole {
     @EntityPolicy(entityClass = Application.class, actions = EntityPolicyAction.ALL)
     void application();
 
-    @EntityAttributePolicy(entityClass = Team.class, attributes = "*", action = EntityAttributePolicyAction.MODIFY)
-    @EntityPolicy(entityClass = Team.class, actions = EntityPolicyAction.ALL)
+    @EntityAttributePolicy(entityClass = WorkspaceTeam.class, attributes = "*", action = EntityAttributePolicyAction.MODIFY)
+    @EntityPolicy(entityClass = WorkspaceTeam.class, actions = EntityPolicyAction.ALL)
     void team();
 
-    @EntityAttributePolicy(entityClass = TeamMember.class, attributes = "*", action = EntityAttributePolicyAction.MODIFY)
-    @EntityPolicy(entityClass = TeamMember.class, actions = EntityPolicyAction.ALL)
+    @EntityAttributePolicy(entityClass = WorkspaceTeamMember.class, attributes = "*", action = EntityAttributePolicyAction.MODIFY)
+    @EntityPolicy(entityClass = WorkspaceTeamMember.class, actions = EntityPolicyAction.ALL)
     void teamMember();
 
     @EntityAttributePolicy(entityClass = ApplicationClarification.class, attributes = "*", action = EntityAttributePolicyAction.MODIFY)

@@ -6,8 +6,10 @@
         <item view="Workspace.list" title="msg://com.company.mentoring.view.workspace/workspaceListView.title"/>
         <item view="WorkspaceParticipant.list"
               title="msg://com.company.mentoring.view.workspaceparticipant/workspaceParticipantListView.title"/>
-        <item view="Team.list" title="msg://com.company.mentoring.view.team/teamListView.title"/>
         <item view="Assignment.list" title="msg://com.company.mentoring.view.assignment/assignmentListView.title"/>
+        <item view="GlobalTeamMember.list"
+              title="msg://com.company.mentoring.view.globalteammember/globalTeamMemberListView.title"/>
+        <item view="GlobalTeam.list" title="msg://com.company.mentoring.view.globalteam/globalTeamListView.title"/>
     </menu>
 
 </menu-config>

@@ -12,8 +12,7 @@ import java.util.UUID;
 @Table(name = "ASSIGNMENT", indexes = {
         @Index(name = "IDX_ASSIGNMENT_WORKSPACE", columnList = "WORKSPACE_ID"),
         @Index(name = "IDX_ASSIGNMENT_EXECUTORS_TEAM", columnList = "EXECUTORS_TEAM_ID"),
-        @Index(name = "IDX_ASSIGNMENT_SUPERVISORS_TEAM", columnList = "SUPERVISORS_TEAM_ID"),
-        @Index(name = "IDX_ASSIGNMENT_APPLICATION", columnList = "APPLICATION_ID")
+        @Index(name = "IDX_ASSIGNMENT_SUPERVISORS_TEAM", columnList = "SUPERVISORS_TEAM_ID")
 })
 @Entity
 public class Assignment {
@@ -21,10 +20,6 @@ public class Assignment {
     @Column(name = "ID", nullable = false)
     @Id
     private UUID id;
-
-    @JoinColumn(name = "APPLICATION_ID")
-    @ManyToOne(fetch = FetchType.LAZY)
-    private Application application;
 
     @InstanceName
     @Column(name = "TITLE")
@@ -40,11 +35,11 @@ public class Assignment {
 
     @JoinColumn(name = "EXECUTORS_TEAM_ID")
     @ManyToOne(fetch = FetchType.LAZY)
-    private Team executorsTeam;
+    private WorkspaceTeam executorsWorkspaceTeam;
 
     @JoinColumn(name = "SUPERVISORS_TEAM_ID")
     @ManyToOne(fetch = FetchType.LAZY)
-    private Team supervisorsTeam;
+    private WorkspaceTeam supervisorsWorkspaceTeam;
 
     @JoinColumn(name = "WORKSPACE_ID")
     @ManyToOne(fetch = FetchType.LAZY)
@@ -53,28 +48,20 @@ public class Assignment {
     @Column(name = "STATUS")
     private String status;
 
-    public Application getApplication() {
-        return application;
+    public WorkspaceTeam getSupervisorsTeam() {
+        return supervisorsWorkspaceTeam;
     }
 
-    public void setApplication(Application application) {
-        this.application = application;
+    public void setSupervisorsTeam(WorkspaceTeam supervisorsWorkspaceTeam) {
+        this.supervisorsWorkspaceTeam = supervisorsWorkspaceTeam;
     }
 
-    public Team getSupervisorsTeam() {
-        return supervisorsTeam;
+    public WorkspaceTeam getExecutorsTeam() {
+        return executorsWorkspaceTeam;
     }
 
-    public void setSupervisorsTeam(Team supervisorsTeam) {
-        this.supervisorsTeam = supervisorsTeam;
-    }
-
-    public Team getExecutorsTeam() {
-        return executorsTeam;
-    }
-
-    public void setExecutorsTeam(Team executorsTeam) {
-        this.executorsTeam = executorsTeam;
+    public void setExecutorsTeam(WorkspaceTeam executorsWorkspaceTeam) {
+        this.executorsWorkspaceTeam = executorsWorkspaceTeam;
     }
 
     public Date getCreatedAt() {

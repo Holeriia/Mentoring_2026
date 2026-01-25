@@ -6,14 +6,14 @@
         <instance id="assignmentDc"
                   class="com.company.mentoring.entity.Assignment">
             <fetchPlan extends="_base">
-                <property name="executorsTeam" fetchPlan="_base">
+                <property name="executorsWorkspaceTeam" fetchPlan="_base">
                     <property name="members" fetchPlan="_base">
                         <property name="participant">
                             <property name="user" fetchPlan="_instance_name"/>
                         </property>
                     </property>
                 </property>
-                <property name="supervisorsTeam" fetchPlan="_base">
+                <property name="supervisorsWorkspaceTeam" fetchPlan="_base">
                     <property name="members" fetchPlan="_base">
                         <property name="participant" fetchPlan="_instance_name">
                             <property name="user" fetchPlan="_instance_name"/>
@@ -21,7 +21,6 @@
                     </property>
                 </property>
                 <property name="workspace" fetchPlan="_instance_name"/>
-                <property name="application" fetchPlan="_base"/>
             </fetchPlan>
             <loader id="assignmentDl"/>
         </instance>
@@ -41,15 +40,14 @@
             </responsiveSteps>
             <textField id="titleField" property="title"/>
             <textArea id="descriptionField" height="9.5em" property="description"/>
-            <textField id="applicationField" property="application"/>
             <dateTimePicker id="createdAtField" property="createdAt"/>
-            <entityPicker id="executorsTeamField" property="executorsTeam">
+            <entityPicker id="executorsTeamField" property="executorsWorkspaceTeam">
                 <actions>
                     <action id="entityLookupAction" type="entity_lookup"/>
                     <action id="entityClearAction" type="entity_clear"/>
                 </actions>
             </entityPicker>
-            <entityPicker id="supervisorsTeamField" property="supervisorsTeam">
+            <entityPicker id="supervisorsTeamField" property="supervisorsWorkspaceTeam">
                 <actions>
                     <action id="entityLookupAction" type="entity_lookup"/>
                     <action id="entityClearAction" type="entity_clear"/>

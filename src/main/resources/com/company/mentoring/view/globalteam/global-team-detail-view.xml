@@ -1,16 +1,12 @@
 <?xml version="1.0" encoding="UTF-8" standalone="no"?>
 <view xmlns="http://jmix.io/schema/flowui/view"
-      title="msg://teamMemberDetailView.title"
+      title="msg://globalTeamDetailView.title"
       focusComponent="form">
     <data>
-        <instance id="teamMemberDc"
-                  class="com.company.mentoring.entity.WorkspaceTeamMember">
-            <fetchPlan extends="_base">
-                <property name="participant" fetchPlan="_base">
-                    <property name="user" fetchPlan="_instance_name"/>
-                </property>
-            </fetchPlan>
-            <loader id="teamMemberDl"/>
+        <instance id="globalTeamDc"
+                  class="com.company.mentoring.entity.GlobalTeam">
+            <fetchPlan extends="_base"/>
+            <loader id="globalTeamDl"/>
         </instance>
     </data>
     <facets>
@@ -21,17 +17,13 @@
         <action id="closeAction" type="detail_close"/>
     </actions>
     <layout>
-        <formLayout id="form" dataContainer="teamMemberDc">
+        <formLayout id="form" dataContainer="globalTeamDc">
             <responsiveSteps>
                 <responsiveStep minWidth="0" columns="1"/>
                 <responsiveStep minWidth="40em" columns="2"/>
             </responsiveSteps>
-            <entityPicker id="participantField" property="participant">
-                <actions>
-                    <action id="entityLookupAction" type="entity_lookup"/>
-                    <action id="entityClearAction" type="entity_clear"/>
-                </actions>
-            </entityPicker>
+            <textField id="nameField" property="name"/>
+            <textField id="descriptionField" property="description"/>
         </formLayout>
         <hbox id="detailActions">
             <button id="saveAndCloseButton" action="saveAction"/>

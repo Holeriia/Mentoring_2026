@@ -6,14 +6,14 @@
         <instance id="assignmentDc"
                   class="com.company.mentoring.entity.Assignment">
             <fetchPlan extends="_base">
-                <property name="executorsTeam">
+                <property name="executorsWorkspaceTeam">
                     <property name="members">
                         <property name="participant">
                             <property name="user" fetchPlan="_instance_name"/>
                         </property>
                     </property>
                 </property>
-                <property name="supervisorsTeam">
+                <property name="supervisorsWorkspaceTeam">
                     <property name="members">
                         <property name="participant">
                             <property name="user" fetchPlan="_instance_name"/>
@@ -48,13 +48,13 @@
             <entityPicker
                     id="executorsTeamField"
                     label="Команда исполнителей"
-                    property="executorsTeam"
+                    property="executorsWorkspaceTeam"
                     readOnly="true"/>
 
             <entityPicker
                     id="supervisorsTeamField"
                     label="Команда руководителей"
-                    property="supervisorsTeam"
+                    property="supervisorsWorkspaceTeam"
                     readOnly="true"/>
 
             <comboBox

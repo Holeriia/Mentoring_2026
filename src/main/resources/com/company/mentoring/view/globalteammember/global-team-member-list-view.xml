@@ -1,22 +1,20 @@
 <?xml version="1.0" encoding="UTF-8" standalone="no"?>
 <view xmlns="http://jmix.io/schema/flowui/view"
       xmlns:c="http://jmix.io/schema/flowui/jpql-condition"
-      title="msg://teamListView.title"
-      focusComponent="teamsDataGrid">
+      title="msg://globalTeamMemberListView.title"
+      focusComponent="globalTeamMembersDataGrid">
     <data>
-        <collection id="teamsDc"
-                    class="com.company.mentoring.entity.WorkspaceTeam">
+        <collection id="globalTeamMembersDc"
+                    class="com.company.mentoring.entity.GlobalTeamMember">
             <fetchPlan extends="_base">
-                <property name="members" fetchPlan="_base">
-                    <property name="workspaceTeam" fetchPlan="_base"/>
-                    <property name="participant" fetchPlan="_base">
-                        <property name="user" fetchPlan="_instance_name"/>
-                    </property>
+                <property name="globalTeam" fetchPlan="_base"/>
+                <property name="user" fetchPlan="_instance_name">
+                    <property name="username"/>
                 </property>
             </fetchPlan>
-            <loader id="teamsDl" readOnly="true">
+            <loader id="globalTeamMembersDl" readOnly="true">
                 <query>
-                    <![CDATA[select e from Team e]]>
+                    <![CDATA[select e from GlobalTeamMember e]]>
                 </query>
             </loader>
         </collection>
@@ -34,19 +32,19 @@
     </actions>
     <layout>
         <genericFilter id="genericFilter"
-                       dataLoader="teamsDl">
+                       dataLoader="globalTeamMembersDl">
             <properties include=".*"/>
         </genericFilter>
         <hbox id="buttonsPanel" classNames="buttons-panel">
-            <button id="createButton" action="teamsDataGrid.createAction"/>
-            <button id="editButton" action="teamsDataGrid.editAction"/>
-            <button id="removeButton" action="teamsDataGrid.removeAction"/>
-            <simplePagination id="pagination" dataLoader="teamsDl"/>
+            <button id="createButton" action="globalTeamMembersDataGrid.createAction"/>
+            <button id="editButton" action="globalTeamMembersDataGrid.editAction"/>
+            <button id="removeButton" action="globalTeamMembersDataGrid.removeAction"/>
+            <simplePagination id="pagination" dataLoader="globalTeamMembersDl"/>
         </hbox>
-        <dataGrid id="teamsDataGrid"
+        <dataGrid id="globalTeamMembersDataGrid"
                   width="100%"
                   minHeight="20em"
-                  dataContainer="teamsDc"
+                  dataContainer="globalTeamMembersDc"
                   columnReorderingAllowed="true">
             <actions>
                 <action id="createAction" type="list_create"/>
@@ -54,8 +52,8 @@
                 <action id="removeAction" type="list_remove"/>
             </actions>
             <columns resizable="true">
-                <column property="teamType"/>
-                <column property="members"/>
+                <column property="globalTeam"/>
+                <column property="user"/>
             </columns>
         </dataGrid>
         <hbox id="lookupActions" visible="false">

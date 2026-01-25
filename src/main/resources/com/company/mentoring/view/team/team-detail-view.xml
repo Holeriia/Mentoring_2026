@@ -4,7 +4,7 @@
       focusComponent="form">
     <data>
         <instance id="teamDc"
-                  class="com.company.mentoring.entity.Team">
+                  class="com.company.mentoring.entity.WorkspaceTeam">
             <fetchPlan extends="_base">
                 <property name="members" fetchPlan="_base">
                     <property name="participant" fetchPlan="_instance_name">
@@ -31,7 +31,7 @@
             </responsiveSteps>
             <select id="teamTypeField" property="teamType"/>
         </formLayout>
-        <h4 text="msg://com.company.mentoring.entity/Team.members"/>
+        <h4 text="msg://WorkspaceTeam"/>
         <hbox id="membersButtonsPanel" classNames="buttons-panel">
             <button action="membersDataGrid.createAction"/>
             <button action="membersDataGrid.editAction"/>

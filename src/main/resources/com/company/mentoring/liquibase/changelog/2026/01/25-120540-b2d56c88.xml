@@ -1,0 +1,72 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<databaseChangeLog
+        xmlns="http://www.liquibase.org/xml/ns/dbchangelog"
+        xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+        xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog
+                      http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-latest.xsd"
+        objectQuotingStrategy="QUOTE_ONLY_RESERVED_WORDS">
+    <changeSet id="1" author="Mentoring">
+        <createTable tableName="GLOBAL_TEAM">
+            <column name="ID" type="UUID">
+                <constraints nullable="false" primaryKey="true" primaryKeyName="PK_GLOBAL_TEAM"/>
+            </column>
+            <column name="NAME" type="VARCHAR(255)"/>
+            <column name="DESCRIPTION" type="VARCHAR(255)"/>
+        </createTable>
+    </changeSet>
+    <changeSet id="2" author="Mentoring">
+        <createTable tableName="GLOBAL_TEAM_MEMBER">
+            <column name="ID" type="UUID">
+                <constraints nullable="false" primaryKey="true" primaryKeyName="PK_GLOBAL_TEAM_MEMBER"/>
+            </column>
+            <column name="GLOBAL_TEAM_ID" type="UUID"/>
+            <column name="USER_ID" type="UUID"/>
+        </createTable>
+    </changeSet>
+    <changeSet id="3" author="Mentoring">
+        <addColumn tableName="TEAM">
+            <column name="GLOBAL_TEAM_ID" type="UUID"/>
+            <column name="NAME" type="VARCHAR(255)"/>
+            <column name="WORKSPACE_ID" type="UUID"/>
+        </addColumn>
+    </changeSet>
+    <changeSet id="4" author="Mentoring">
+        <createIndex indexName="IDX_GLOBAL_TEAM_MEMBER_GLOBAL_TEAM" tableName="GLOBAL_TEAM_MEMBER">
+            <column name="GLOBAL_TEAM_ID"/>
+        </createIndex>
+
+        <addForeignKeyConstraint baseColumnNames="GLOBAL_TEAM_ID" baseTableName="GLOBAL_TEAM_MEMBER"
+                                 constraintName="FK_GLOBAL_TEAM_MEMBER_ON_GLOBAL_TEAM" referencedColumnNames="ID"
+                                 referencedTableName="GLOBAL_TEAM"/>
+    </changeSet>
+    <changeSet id="5" author="Mentoring">
+        <createIndex indexName="IDX_GLOBAL_TEAM_MEMBER_USER" tableName="GLOBAL_TEAM_MEMBER">
+            <column name="USER_ID"/>
+        </createIndex>
+
+        <addForeignKeyConstraint baseColumnNames="USER_ID" baseTableName="GLOBAL_TEAM_MEMBER"
+                                 constraintName="FK_GLOBAL_TEAM_MEMBER_ON_USER" referencedColumnNames="ID"
+                                 referencedTableName="USER_"/>
+    </changeSet>
+    <changeSet id="6" author="Mentoring">
+        <createIndex indexName="IDX_TEAM_GLOBAL_TEAM" tableName="TEAM">
+            <column name="GLOBAL_TEAM_ID"/>
+        </createIndex>
+
+        <addForeignKeyConstraint baseColumnNames="GLOBAL_TEAM_ID" baseTableName="TEAM"
+                                 constraintName="FK_TEAM_ON_GLOBAL_TEAM" referencedColumnNames="ID"
+                                 referencedTableName="GLOBAL_TEAM"/>
+    </changeSet>
+    <changeSet id="7" author="Mentoring">
+        <createIndex indexName="IDX_TEAM_WORKSPACE" tableName="TEAM">
+            <column name="WORKSPACE_ID"/>
+        </createIndex>
+
+        <addForeignKeyConstraint baseColumnNames="WORKSPACE_ID" baseTableName="TEAM"
+                                 constraintName="FK_TEAM_ON_WORKSPACE" referencedColumnNames="ID"
+                                 referencedTableName="WORKSPACE"/>
+    </changeSet>
+    <changeSet id="8" author="Mentoring">
+        <dropColumn columnName="application_id" tableName="assignment"/>
+    </changeSet>
+</databaseChangeLog>

@@ -2,8 +2,6 @@ package com.company.mentoring.app;
 
 import com.company.mentoring.entity.*;
 import io.jmix.core.DataManager;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -16,24 +14,24 @@ public class ApplicationAutoFillService {
     private DataManager dataManager;
 
     public void createInitialTeam(Application application, WorkspaceParticipant participant) {
-        Team team = dataManager.create(Team.class);
+        WorkspaceTeam workspaceTeam = dataManager.create(WorkspaceTeam.class);
 
         // привязываем к заявке
-        team.setApplication(application);
+//        workspaceTeam.setApplication(application);
 
         // тип команды совпадает с ролью участника
-        team.setTeamType(TeamType.fromContextRole(participant.getContextRole()));
+        workspaceTeam.setTeamType(TeamType.fromContextRole(participant.getContextRole()));
 
         // создаём участника команды
-        TeamMember member = dataManager.create(TeamMember.class);
-        member.setTeam(team);
+        WorkspaceTeamMember member = dataManager.create(WorkspaceTeamMember.class);
+        member.setTeam(workspaceTeam);
         member.setParticipant(participant);
 
         // добавляем в команду
-        team.setMembers(List.of(member));
+        workspaceTeam.setMembers(List.of(member));
 
         // добавляем команду к заявке
-        application.setTeams(List.of(team));
+//        application.setTeams(List.of(workspaceTeam));
     }
 
     public void autoFillApplication(Application application,

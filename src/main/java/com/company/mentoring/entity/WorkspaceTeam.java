@@ -3,7 +3,6 @@ package com.company.mentoring.entity;
 import io.jmix.core.DeletePolicy;
 import io.jmix.core.entity.annotation.JmixGeneratedValue;
 import io.jmix.core.entity.annotation.OnDelete;
-import io.jmix.core.entity.annotation.OnDeleteInverse;
 import io.jmix.core.metamodel.annotation.Composition;
 import io.jmix.core.metamodel.annotation.DependsOnProperties;
 import io.jmix.core.metamodel.annotation.InstanceName;
@@ -11,33 +10,62 @@ import io.jmix.core.metamodel.annotation.JmixEntity;
 import jakarta.persistence.*;
 
 import java.util.List;
-import java.util.Objects;
 import java.util.UUID;
-import java.util.stream.Collectors;
 
 @JmixEntity
 @Table(name = "TEAM", indexes = {
-        @Index(name = "IDX_TEAM_APPLICATION", columnList = "APPLICATION_ID")
+        @Index(name = "IDX_TEAM_WORKSPACE", columnList = "WORKSPACE_ID"),
+        @Index(name = "IDX_TEAM_GLOBAL_TEAM", columnList = "GLOBAL_TEAM_ID")
 })
 @Entity
-public class Team {
+public class WorkspaceTeam {
     @JmixGeneratedValue
     @Column(name = "ID", nullable = false)
     @Id
     private UUID id;
 
-    @OnDeleteInverse(DeletePolicy.CASCADE)
-    @JoinColumn(name = "APPLICATION_ID")
-    @ManyToOne(fetch = FetchType.LAZY)
-    private Application application;
+    @Column(name = "NAME")
+    private String name;
 
     @Column(name = "TEAM_TYPE")
     private String teamType;
 
+    @JoinColumn(name = "WORKSPACE_ID")
+    @ManyToOne(fetch = FetchType.LAZY)
+    private Workspace workspace;
+
+    @JoinColumn(name = "GLOBAL_TEAM_ID")
+    @ManyToOne(fetch = FetchType.LAZY)
+    private GlobalTeam globalTeam;
+
     @Composition
     @OnDelete(DeletePolicy.CASCADE)
-    @OneToMany(mappedBy = "team")
-    private List<TeamMember> members;
+    @OneToMany(mappedBy = "workspaceTeam")
+    private List<WorkspaceTeamMember> members;
+
+    public GlobalTeam getGlobalTeam() {
+        return globalTeam;
+    }
+
+    public void setGlobalTeam(GlobalTeam globalTeam) {
+        this.globalTeam = globalTeam;
+    }
+
+    public Workspace getWorkspace() {
+        return workspace;
+    }
+
+    public void setWorkspace(Workspace workspace) {
+        this.workspace = workspace;
+    }
+
+    public String getName() {
+        return name;
+    }
+
+    public void setName(String name) {
+        this.name = name;
+    }
 
     @InstanceName
     @DependsOnProperties({"members"})
@@ -58,11 +86,11 @@ public class Team {
                 .orElse("");
     }
 
-    public List<TeamMember> getMembers() {
+    public List<WorkspaceTeamMember> getMembers() {
         return members;
     }
 
-    public void setMembers(List<TeamMember> members) {
+    public void setMembers(List<WorkspaceTeamMember> members) {
         this.members = members;
     }
 
@@ -72,14 +100,6 @@ public class Team {
 
     public void setTeamType(TeamType teamType) {
         this.teamType = teamType == null ? null : teamType.getId();
-    }
-
-    public Application getApplication() {
-        return application;
-    }
-
-    public void setApplication(Application application) {
-        this.application = application;
     }
 
     public UUID getId() {

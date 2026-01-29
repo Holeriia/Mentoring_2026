@@ -43,9 +43,9 @@
         </formLayout>
         <h4 text="msg://com.company.mentoring.entity/Workspace.participants"/>
         <hbox id="participantsButtonsPanel" classNames="buttons-panel">
-            <button action="participantsDataGrid.createAction"/>
-            <button action="participantsDataGrid.editAction"/>
-            <button action="participantsDataGrid.removeAction"/>
+            <button action="participantsDataGrid.createAction" text="msg://com.company.mentoring.view.application/createAction"/>
+            <button action="participantsDataGrid.editAction" text="msg://com.company.mentoring.view.application/editAction"/>
+            <button action="participantsDataGrid.removeAction" text="msg://com.company.mentoring.view.application/remoteAction"/>
         </hbox>
         <dataGrid id="participantsDataGrid" dataContainer="participantsDc" width="100%" minHeight="20em">
             <actions>
@@ -68,8 +68,8 @@
             </columns>
         </dataGrid>
         <hbox id="detailActions">
-            <button id="saveAndCloseButton" action="saveAction"/>
-            <button id="closeButton" action="closeAction"/>
+            <button id="saveAndCloseButton" action="saveAction" text="msg://saveAction"/>
+            <button id="closeButton" action="closeAction" text="msg://com.company.mentoring.view.application/closeAction"/>
         </hbox>
     </layout>
 </view>

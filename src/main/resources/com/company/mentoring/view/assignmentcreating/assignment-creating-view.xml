@@ -37,7 +37,7 @@
             <textField
                     id="titleField"
                     label="Название"
-                    property="title"/>
+                    property="name"/>
 
             <textArea
                     id="descriptionField"

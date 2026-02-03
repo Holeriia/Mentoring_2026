@@ -57,7 +57,7 @@
                 <action id="removeAction" type="list_remove"/>
             </actions>
             <columns resizable="true">
-                <column property="title"/>
+                <column property="name"/>
                 <column property="description"/>
                 <column property="createdAt"/>
                 <column property="workspace"/>

@@ -23,7 +23,7 @@ public class Assignment {
 
     @InstanceName
     @Column(name = "TITLE")
-    private String title;
+    private String name;
 
     @Column(name = "DESCRIPTION")
     @Lob
@@ -80,12 +80,12 @@ public class Assignment {
         this.description = description;
     }
 
-    public String getTitle() {
-        return title;
+    public String getName() {
+        return name;
     }
 
-    public void setTitle(String title) {
-        this.title = title;
+    public void setName(String name) {
+        this.name = name;
     }
 
     public AssignmentStatus getStatus() {

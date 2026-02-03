@@ -33,7 +33,7 @@ public class CreateAssignmentFromApplicationDelegate implements JavaDelegate {
 
         Assignment assignment = dataManager.create(Assignment.class);
 //        assignment.setApplication(app);
-        assignment.setTitle(app.getTitle());
+        assignment.setName(app.getTitle());
         assignment.setWorkspace(app.getWorkspace());
         assignment.setDescription(app.getDescription());
         assignment.setStatus(AssignmentStatus.ACTIVE);

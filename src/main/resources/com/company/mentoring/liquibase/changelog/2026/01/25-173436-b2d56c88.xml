@@ -1,0 +1,30 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<databaseChangeLog
+        xmlns="http://www.liquibase.org/xml/ns/dbchangelog"
+        xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+        xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog
+                      http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-latest.xsd"
+        objectQuotingStrategy="QUOTE_ONLY_RESERVED_WORDS">
+    <changeSet id="1" author="Mentoring">
+        <addColumn tableName="APPLICATION">
+            <column name="INITIATOR_TEAM_ID" type="UUID"/>
+        </addColumn>
+    </changeSet>
+    <changeSet id="2" author="Mentoring">
+        <addColumn tableName="WORKSPACE">
+            <column name="MAX_MEMBERS_IN_TEAM" type="INT"/>
+        </addColumn>
+    </changeSet>
+    <changeSet id="3" author="Mentoring">
+        <createIndex indexName="IDX_APPLICATION_INITIATOR_TEAM" tableName="APPLICATION">
+            <column name="INITIATOR_TEAM_ID"/>
+        </createIndex>
+
+        <addForeignKeyConstraint baseColumnNames="INITIATOR_TEAM_ID" baseTableName="APPLICATION"
+                                 constraintName="FK_APPLICATION_ON_INITIATOR_TEAM" referencedColumnNames="ID"
+                                 referencedTableName="TEAM"/>
+    </changeSet>
+    <changeSet id="4" author="Mentoring">
+        <dropColumn columnName="initiator_id" tableName="application"/>
+    </changeSet>
+</databaseChangeLog>

@@ -38,7 +38,7 @@
                 <responsiveStep minWidth="0" columns="1"/>
                 <responsiveStep minWidth="40em" columns="2"/>
             </responsiveSteps>
-            <textField id="titleField" property="title"/>
+            <textField id="titleField" property="name"/>
             <textArea id="descriptionField" height="9.5em" property="description"/>
             <dateTimePicker id="createdAtField" property="createdAt"/>
             <entityPicker id="executorsTeamField" property="executorsWorkspaceTeam">

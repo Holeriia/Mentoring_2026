@@ -45,9 +45,9 @@ public class ApplicationAutoFillService {
             application.setCurrentPriorityIndex(1);
         }
 
-        if (application.getInitiator() == null) {
-            application.setInitiator(participant);
-        }
+//        if (application.getInitiator() == null) {
+//            application.setInitiator(participant);
+//        }
 
         // создаём команду с инициатором
         createInitialTeam(application, participant);

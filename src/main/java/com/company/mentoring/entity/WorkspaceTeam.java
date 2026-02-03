@@ -1,8 +1,6 @@
 package com.company.mentoring.entity;
 
-import io.jmix.core.DeletePolicy;
 import io.jmix.core.entity.annotation.JmixGeneratedValue;
-import io.jmix.core.entity.annotation.OnDelete;
 import io.jmix.core.metamodel.annotation.Composition;
 import io.jmix.core.metamodel.annotation.DependsOnProperties;
 import io.jmix.core.metamodel.annotation.InstanceName;
@@ -14,8 +12,7 @@ import java.util.UUID;
 
 @JmixEntity
 @Table(name = "TEAM", indexes = {
-        @Index(name = "IDX_TEAM_WORKSPACE", columnList = "WORKSPACE_ID"),
-        @Index(name = "IDX_TEAM_GLOBAL_TEAM", columnList = "GLOBAL_TEAM_ID")
+        @Index(name = "IDX_TEAM_WORKSPACE", columnList = "WORKSPACE_ID")
 })
 @Entity
 public class WorkspaceTeam {
@@ -34,22 +31,9 @@ public class WorkspaceTeam {
     @ManyToOne(fetch = FetchType.LAZY)
     private Workspace workspace;
 
-    @JoinColumn(name = "GLOBAL_TEAM_ID")
-    @ManyToOne(fetch = FetchType.LAZY)
-    private GlobalTeam globalTeam;
-
     @Composition
-    @OnDelete(DeletePolicy.CASCADE)
     @OneToMany(mappedBy = "workspaceTeam")
     private List<WorkspaceTeamMember> members;
-
-    public GlobalTeam getGlobalTeam() {
-        return globalTeam;
-    }
-
-    public void setGlobalTeam(GlobalTeam globalTeam) {
-        this.globalTeam = globalTeam;
-    }
 
     public Workspace getWorkspace() {
         return workspace;

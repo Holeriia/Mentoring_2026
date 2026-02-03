@@ -35,9 +35,20 @@ public class Workspace {
     @ManyToOne(fetch = FetchType.LAZY)
     private User owner;
 
+    @Column(name = "MAX_MEMBERS_IN_TEAM")
+    private Integer maxMembersInTeam;
+
     @Composition
     @OneToMany(mappedBy = "workspace")
     private List<WorkspaceParticipant> participants;
+
+    public Integer getMaxMembersInTeam() {
+        return maxMembersInTeam;
+    }
+
+    public void setMaxMembersInTeam(Integer maxMembersInTeam) {
+        this.maxMembersInTeam = maxMembersInTeam;
+    }
 
     public List<WorkspaceParticipant> getParticipants() {
         return participants;

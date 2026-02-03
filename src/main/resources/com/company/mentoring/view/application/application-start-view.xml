@@ -63,9 +63,9 @@
             </columns>
         </dataGrid>
         <hbox id="detailActions">
-<!--            <button id="saveAndCloseButton" action="saveAction"/>-->
+            <button id="saveAndCloseButton" text="msg://io.jmix.bpmflowui.view.modeler.properties.sendemailtask/save" action="saveAction"/>
+<!--            <button id="closeButton" action="closeAction" text="msg://closeAction"/>-->
             <button id="startProcessBtn" icon="vaadin:arrow-circle-right" text="msg://applicationStartBtn"/>/>
-            <button id="closeButton" action="closeAction" text="msg://closeAction"/>
         </hbox>
     </layout>
 </view>
